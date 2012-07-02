@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to='VaadinVideoChat'>
+	<inherits name='elemental.Elemental' />
+	<inherits name='com.google.gwt.user.theme.standard.Standard' />
+	<inherits name='com.google.gwt.json.JSON' />
+
+	<inherits name='com.google.gwt.user.User' />
+	<!-- <inherits name="com.google.gwt.logging.Logging" /> -->
+	<!-- <set-property name="gwt.logging.logLevel" value="FINEST" /> -->
+
+	<entry-point class='org.vaadin.sasha.videochat.client.VaadinVideoChat' />
+	<source path='client' />
+	<source path='shared' />
+	<add-linker name="xsiframe" />
+	<set-configuration-property name="devModeRedirectEnabled"
+		value="true" />
+</module>
