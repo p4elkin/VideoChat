@@ -2,7 +2,9 @@ package org.vaadin.sasha.videochat.client;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
+import elemental.client.Browser;
 import elemental.dom.Element;
+import elemental.html.Location;
 
 public class StringUtil {
 
@@ -84,4 +86,9 @@ public class StringUtil {
           element.setClassName(newClassName);
         }
       }
+
+    public static String prepareWsUrl(int userId) {
+        final Location location = Browser.getDocument().getLocation();
+        return "ws://" + location.getHost() + "/vaadin-video-chat/VaadinVideoChat/socket/" + userId;
+    }
 }

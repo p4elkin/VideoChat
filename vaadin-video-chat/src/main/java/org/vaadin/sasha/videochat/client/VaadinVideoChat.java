@@ -203,8 +203,8 @@ public class VaadinVideoChat implements EntryPoint {
     }
     
     private WebSocket createWebSocket() {
-        //WebSocket ws = window.newWebSocket("ws://sasha2.virtuallypreinstalled.com/" + userId);
-        WebSocket ws = window.newWebSocket("ws://localhost:8080/VaadinVideoChat/socket/" + userId);
+        final String wsUrl = StringUtil.prepareWsUrl(userId); 
+        WebSocket ws = window.newWebSocket(wsUrl);
         ws.setOnopen(new EventListener() {
             @Override
             public void handleEvent(Event evt) {

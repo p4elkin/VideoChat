@@ -1,10 +1,13 @@
 package org.vaadin.sasha.videochat.server;
 
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -17,6 +20,8 @@ import org.eclipse.jetty.websocket.WebSocketFactory;
 @SuppressWarnings("serial")
 public class VideoWebSocketServlet extends HttpServlet implements WebSocketFactory.Acceptor {
 
+    private Logger logger = Logger.getLogger("org.vaadin.sasha.videochat.server.VideoWebSocketServlet");
+    
     private Map<Integer, VideoChatSocket> idToSocket = new HashMap<Integer, VideoChatSocket>();
     
     WebSocketFactory _webSocketFactory;
@@ -24,6 +29,7 @@ public class VideoWebSocketServlet extends HttpServlet implements WebSocketFacto
     @Override
     public void init() throws ServletException {
         super.init();
+        logger.log(Level.INFO, "Initializing servlet");
         String bs=getInitParameter("bufferSize");
         _webSocketFactory = new WebSocketFactory(this,bs==null?8192:Integer.parseInt(bs));
         String max=getInitParameter("maxIdleTime");
@@ -41,25 +47,37 @@ public class VideoWebSocketServlet extends HttpServlet implements WebSocketFacto
     
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (_webSocketFactory.acceptWebSocket(request,response) || response.isCommitted())
-            return;
-        super.service(request, response);
+        logger.log(Level.FINER, "Processing request " + request.getRequestURL());
+        Enumeration<?> en = request.getHeaderNames();
+        while (en.hasMoreElements()) {
+            final String headerName = String.valueOf(en.nextElement());
+            logger.log(Level.FINER, headerName + ":" + request.getHeader(headerName));
+        }
+        try {
+            if (_webSocketFactory.acceptWebSocket(request,response) || response.isCommitted())
+                return;
+            super.service(request, response);   
+        } catch(Exception e) {
+            logger.log(Level.SEVERE, "Error occured while processing: " + e.getMessage());
+        }
     }
     
     
     @Override
     public WebSocket doWebSocketConnect(HttpServletRequest request, String ignore) {
+        int userId = -1;
+        VideoChatSocket ws = null;
         try {
-            //logger.log(Level.INFO, "Creating websocket for " + request.getRequestURI());
+            logger.log(Level.INFO, "Creating websocket for " + request.getRequestURI());
             final String uri = request.getRequestURI();
-            final Integer userId = Integer.parseInt(uri.substring(uri.lastIndexOf('/') + 1));
-            final VideoChatSocket ws = new VideoChatSocket(userId);
-            idToSocket.put(userId, ws);
-            return ws;            
+            userId = Integer.parseInt(uri.substring(uri.lastIndexOf('/') + 1));            
         } catch (NumberFormatException ex) {
-            //logger.log(Level.SEVERE, ex.getMessage());
+            logger.log(Level.SEVERE, ex.getMessage());
+        } finally {
+            ws = new VideoChatSocket(userId);
+            idToSocket.put(userId, ws);
         }
-        return null;
+        return ws;
     }
 
     @Override
