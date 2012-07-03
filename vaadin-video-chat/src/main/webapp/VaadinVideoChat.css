@@ -1,15 +1,3 @@
-/** Add css rules here for your application. */
-
-
-/** Example rules used by the template application (remove for your app) */
-h1 {
-  font-size: 2em;
-  font-weight: bold;
-  color: #777777;
-  margin: 40px 0px 70px;
-  text-align: center;
-}
-
 .sendButton {
   display: block;
   font-size: 16pt;
@@ -28,7 +16,55 @@ h1 {
   color: red;
 }
 
-/** Set ids using widget.getElement().setId("idOfElement") */
-#closeButton {
-  margin: 15px 6px 6px;
+
+.remoteVideo {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.localVideo {
+	position: absolute;
+	bottom: 0;
+	right:0;
+}
+
+.fullscreen {
+	width: 100%;
+	height: 100%;
+}
+
+.zoom-in {
+    -webkit-animation-duration: 0.75s;
+    /*-webkit-animation-timing-function: ease-out;*/
+    -webkit-animation-name: zoom-in;
+    -webkit-transform:scale(1);
+}
+
+@-webkit-keyframes zoom-out {
+    from {
+      -webkit-transform:scale(1)
+    } to {
+       -webkit-transform:scale(0.5)
+    }
+}
+
+@-webkit-keyframes zoom-in {
+    from {
+      -webkit-transform:scale(0);
+    } to {
+       -webkit-transform:scale(1);
+    }
+}
+
+.shrinked {
+    -webkit-transition-property: width;
+    -webkit-transition-duration: 2s;
+}
+
+.create-room-button {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 1000;
 }

@@ -4,17 +4,24 @@
     "http://java.sun.com/dtd/web-app_2_3.dtd">
 
 <web-app>
-	<listener>
+	<!--  <listener>
         <listener-class>org.vaadin.sasha.videochat.server.VideoChatListener</listener-class>
-    </listener>
+    </listener>-->
 	<servlet>
 		<servlet-name>greetServlet</servlet-name>
 		<servlet-class>org.vaadin.sasha.videochat.server.VideoChatServiceImpl</servlet-class>
 	</servlet>
-    
+	<servlet>
+		<servlet-name>socketServlet</servlet-name>
+		<servlet-class>org.vaadin.sasha.videochat.server.VideoWebSocketServlet</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>greetServlet</servlet-name>
 		<url-pattern>/VaadinVideoChat/greet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>socketServlet</servlet-name>
+		<url-pattern>/VaadinVideoChat/socket/*</url-pattern>
 	</servlet-mapping>
 	<!-- Default page to serve -->
 	<welcome-file-list>
