@@ -11,5 +11,5 @@ public interface VideoChatService extends RemoteService {
 	
     int createChatRoom(int creatorId) throws IllegalArgumentException;
 
-    int registerUser() throws IllegalArgumentException;
+    int registerUser(final String userName) throws IllegalArgumentException;
 }

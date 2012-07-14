@@ -34,6 +34,12 @@
 	height: 100%;
 }
 
+.loginBox {
+	position: absolute;
+	top: 50px;
+	left: 0;
+}
+
 .zoom-in {
     -webkit-animation-duration: 0.75s;
     /*-webkit-animation-timing-function: ease-out;*/

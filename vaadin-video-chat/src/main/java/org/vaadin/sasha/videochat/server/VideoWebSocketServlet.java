@@ -1,68 +1,30 @@
 package org.vaadin.sasha.videochat.server;
 
 import java.io.IOException;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.jetty.websocket.WebSocket;
-import org.eclipse.jetty.websocket.WebSocketFactory;
+import org.eclipse.jetty.websocket.WebSocketServlet;
 
 @SuppressWarnings("serial")
-public class VideoWebSocketServlet extends HttpServlet implements WebSocketFactory.Acceptor {
+public class VideoWebSocketServlet extends WebSocketServlet {
 
     private Logger logger = Logger.getLogger("org.vaadin.sasha.videochat.server.VideoWebSocketServlet");
     
-    private Map<Integer, VideoChatSocket> idToSocket = new HashMap<Integer, VideoChatSocket>();
+    private Map<Integer, VideoChatSocket> idToSocket = new ConcurrentHashMap<Integer, VideoChatSocket>();
     
-    WebSocketFactory _webSocketFactory;
-    
-    @Override
-    public void init() throws ServletException {
-        super.init();
-        logger.log(Level.INFO, "Initializing servlet");
-        String bs=getInitParameter("bufferSize");
-        _webSocketFactory = new WebSocketFactory(this,bs==null?8192:Integer.parseInt(bs));
-        String max=getInitParameter("maxIdleTime");
-        if (max!=null)
-            _webSocketFactory.setMaxIdleTime(Integer.parseInt(max));
-        
-        max=getInitParameter("maxTextMessageSize");
-        if (max!=null)
-            _webSocketFactory.setMaxTextMessageSize(Integer.parseInt(max));
-        
-        max=getInitParameter("maxBinaryMessageSize");
-        if (max!=null)
-            _webSocketFactory.setMaxBinaryMessageSize(Integer.parseInt(max));
-    }
-    
-    @Override
-    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        logger.log(Level.FINER, "Processing request " + request.getRequestURL());
-        Enumeration<?> en = request.getHeaderNames();
-        while (en.hasMoreElements()) {
-            final String headerName = String.valueOf(en.nextElement());
-            logger.log(Level.FINER, headerName + ":" + request.getHeader(headerName));
-        }
-        try {
-            if (_webSocketFactory.acceptWebSocket(request,response) || response.isCommitted())
-                return;
-            super.service(request, response);   
-        } catch(Exception e) {
-            logger.log(Level.SEVERE, "Error occured while processing: " + e.getMessage());
-        }
-    }
-    
-    
+    //private List<VideoChatMessage> offers = new LinkedList<VideoChatMessage>();
+            
     @Override
     public WebSocket doWebSocketConnect(HttpServletRequest request, String ignore) {
         int userId = -1;
@@ -114,6 +76,13 @@ public class VideoWebSocketServlet extends HttpServlet implements WebSocketFacto
         @Override
         public void onOpen(Connection connection) {
             this.connection = connection;
+            /*if (!offers.isEmpty()) {
+                try {
+                    connection.sendMessage(new Gson().toJson(offers.get(0)));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }*/
         }
 
         @Override

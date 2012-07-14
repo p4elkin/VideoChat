@@ -8,7 +8,7 @@
 	<artifactId>vaadin-video-chat</artifactId>
 	<packaging>war</packaging>
 	<version>1.0-SNAPSHOT</version>
-	<name>GWT Maven Archetype</name>
+	<name>Vaadin Video Chat</name>
 
 	<properties>
 		<!-- Convenience property to set the GWT version -->
@@ -21,11 +21,31 @@
 	</properties>
 
 	<dependencies>
+		<!-- GIN Stuff -->
+		<dependency>
+			<groupId>com.google.gwt.inject</groupId>
+			<artifactId>gin</artifactId>
+			<version>1.5.0</version>
+			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>com.google.gwt</groupId>
+					<artifactId>gwt-servlet</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- Gson: Java to Json conversion -->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.2.2</version>
+			<scope>compile</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.vaadin</groupId>
 			<artifactId>vaadin7-rc</artifactId>
 			<version>1.0.0</version>
-			<scope>provided</scope>			
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
@@ -92,10 +112,12 @@
 					<dependency>
 						<groupId>org.vaadin</groupId>
 						<artifactId>vaadin7-rc</artifactId>
-						<version>1.0.0</version>	
+						<version>1.0.0</version>
 					</dependency>
 				</dependencies>
 				<configuration>
+					<draftCompile>true</draftCompile>
+					<style>PRETTY</style>
 					<webappDirectory>${basedir}/src/main/webapp</webappDirectory>
 					<port>8080</port>
 					<!-- <logLevel>TRACE</logLevel> -->
@@ -112,7 +134,7 @@
 					<scanIntervalSeconds>0</scanIntervalSeconds>
 					<reload>manual</reload>
 					<downloadSources>true</downloadSources>
-                    <downloadJavadocs>true</downloadJavadocs>
+					<downloadJavadocs>true</downloadJavadocs>
 				</configuration>
 			</plugin>
 
@@ -143,22 +165,18 @@
 				</configuration>
 			</plugin>
 			<plugin>
-  				<groupId>org.zeroturnaround</groupId>
-  				<artifactId>jrebel-maven-plugin</artifactId>
-  				<version>1.1.1</version>
-  				<!--  <configuration>
-  					<relativePath>../${basedir}</relativePath>
-  					<rootPath>$${portallayout.root}</rootPath>
-				</configuration>-->
-  				<executions>
-    				<execution>
-      					<id>generate-rebel-xml</id>
-      					<phase>process-resources</phase>
-      					<goals>
-        					<goal>generate</goal>
-      					</goals>
-    				</execution>
-  				</executions>
+				<groupId>org.zeroturnaround</groupId>
+				<artifactId>jrebel-maven-plugin</artifactId>
+				<version>1.1.1</version>
+				<executions>
+					<execution>
+						<id>generate-rebel-xml</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

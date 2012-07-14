@@ -7,7 +7,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public interface VideoChatServiceAsync {
 
-	void registerUser(AsyncCallback<Integer> callback) throws IllegalArgumentException;
+	void registerUser(final String userName, AsyncCallback<Integer> callback) throws IllegalArgumentException;
 
 	void createChatRoom(int creatorId, AsyncCallback<Integer> callback) throws IllegalArgumentException;
 }
