@@ -1,4 +1,4 @@
-package org.vaadin.sasha.videochat.client;
+package org.vaadin.sasha.videochat.client.activity;
 
 import javax.inject.Inject;
 

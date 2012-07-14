@@ -16,5 +16,5 @@ public class LoginPlaceTokenizer extends BaseTokenizer<LoginPlace> {
     public String getToken(LoginPlace place) {
         return place.toString();
     }
-
+    
 }

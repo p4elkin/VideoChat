@@ -6,7 +6,7 @@ import elemental.dom.LocalMediaStream;
 
 
 public class LocalStreamReceivedEvent extends Event<LocalStreamReceivedEvent.Handler>{
-
+    
     public final static Type<Handler> TYPE = new Type<Handler>();
     
     public LocalMediaStream stream;

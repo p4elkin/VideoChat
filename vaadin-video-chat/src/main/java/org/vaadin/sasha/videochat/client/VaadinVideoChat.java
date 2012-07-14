@@ -14,10 +14,9 @@ public class VaadinVideoChat implements EntryPoint {
     
     public void onModuleLoad() {
         final SimplePanel mainViewport = injector.getMainViewport();
-        mainViewport.setHeight("100%");
-        mainViewport.setWidth("100%");
+        injector.getPlaceHistoryHandler();
+        mainViewport.addStyleName("videochat");
         RootPanel.get().add(mainViewport);
-        
         injector.getPlaceController().goTo(new LoginPlace());
     }
 

@@ -1,10 +1,10 @@
-package org.vaadin.sasha.videochat.client;
+package org.vaadin.sasha.videochat.client.util;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
 import elemental.client.Browser;
-import elemental.dom.Element;
 import elemental.html.Location;
+
 
 public class StringUtil {
 

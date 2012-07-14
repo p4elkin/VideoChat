@@ -1,7 +1,7 @@
 package org.vaadin.sasha.videochat.client.widget;
 
-import org.vaadin.sasha.videochat.client.StringUtil;
 import org.vaadin.sasha.videochat.client.event.LocalStreamReceivedEvent;
+import org.vaadin.sasha.videochat.client.util.StringUtil;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.Element;

@@ -1,14 +1,12 @@
 package org.vaadin.sasha.videochat.client.serverconnection;
 
-import org.vaadin.sasha.videochat.client.StringUtil;
-import org.vaadin.sasha.videochat.client.VideoChatService;
-import org.vaadin.sasha.videochat.client.VideoChatServiceAsync;
+import org.vaadin.sasha.videochat.client.SessionInfo;
 import org.vaadin.sasha.videochat.client.event.SdpEvent;
 import org.vaadin.sasha.videochat.client.event.SocketEvent;
 import org.vaadin.sasha.videochat.client.event.UserLogedInEvent;
+import org.vaadin.sasha.videochat.client.util.StringUtil;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 
@@ -20,40 +18,24 @@ import elemental.events.MessageEvent;
 import elemental.html.WebSocket;
 import elemental.js.util.Json;
 
-public class ServerConnection implements SdpEvent.Handler {
-
-    private final VideoChatServiceAsync service = GWT.create(VideoChatService.class);
+public class ServerConnection implements SdpEvent.Handler, UserLogedInEvent.Handler {
     
     private final EventBus eventBus;
     
     private WebSocket socket;
     
-    private int userId = -1;
+    private SessionInfo sessionInfo;
     
     @Inject
-    public ServerConnection(final EventBus eventBus) {
+    public ServerConnection(final EventBus eventBus, final SessionInfo sessionInfo) {
+        this.sessionInfo = sessionInfo;
         this.eventBus = eventBus;
         this.eventBus.addHandler(SdpEvent.TYPE, this);
-    }
-    
-    public void initialize(final String userName) {
-        service.registerUser(userName, new AsyncCallback<Integer>() {
-            @Override
-            public void onSuccess(Integer id) {
-                userId = id;
-                socket = createWebSocket();
-                eventBus.fireEvent(new UserLogedInEvent(userId));
-            }
-
-            @Override
-            public void onFailure(Throwable arg0) {
-                Browser.getWindow().alert("Failed to register session");
-            }
-        });
+        this.eventBus.addHandler(UserLogedInEvent.TYPE, this);
     }
 
     private WebSocket createWebSocket() {
-        final String wsUrl = StringUtil.prepareWsUrl(userId);
+        final String wsUrl = StringUtil.prepareWsUrl(sessionInfo.getUserId());
         WebSocket ws = Browser.getWindow().newWebSocket(wsUrl);
         ws.setOnopen(new EventListener() {
             @Override
@@ -90,5 +72,10 @@ public class ServerConnection implements SdpEvent.Handler {
     @Override
     public void onCandidate(SdpEvent event) {
         socket.send(Json.stringify(event.getMessage()));
+    }
+
+    @Override
+    public void onUserLogedIn(UserLogedInEvent event) {
+        socket = createWebSocket();
     }
 }

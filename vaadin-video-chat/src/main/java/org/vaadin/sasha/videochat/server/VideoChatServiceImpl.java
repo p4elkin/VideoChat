@@ -14,7 +14,7 @@ public class VideoChatServiceImpl extends RemoteServiceServlet implements VideoC
         return VideoChatRoomManager.createRoom(creatorId).getId();
     }
 
-    public int registerUser(final String userName) throws IllegalArgumentException {
+    public int login(String userName, String password) throws IllegalArgumentException {
         return VideoChatRoomManager.getUserId(userName);
     }
 }

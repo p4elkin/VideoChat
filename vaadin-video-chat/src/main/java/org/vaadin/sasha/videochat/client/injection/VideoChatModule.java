@@ -1,14 +1,15 @@
 package org.vaadin.sasha.videochat.client.injection;
 
-import org.vaadin.sasha.videochat.client.VideoChatActivityMapper;
-import org.vaadin.sasha.videochat.client.VideoChatPlaceHistoryMapper;
+import org.vaadin.sasha.videochat.client.SessionInfo;
+import org.vaadin.sasha.videochat.client.activity.VideoChatActivityMapper;
 import org.vaadin.sasha.videochat.client.chat.VideoChatActivity;
+import org.vaadin.sasha.videochat.client.chat.VideoChatPlace;
 import org.vaadin.sasha.videochat.client.chat.VideoChatView;
 import org.vaadin.sasha.videochat.client.chat.VideoChatViewImpl;
 import org.vaadin.sasha.videochat.client.login.LoginActivity;
-import org.vaadin.sasha.videochat.client.login.LoginPlace;
 import org.vaadin.sasha.videochat.client.login.LoginView;
 import org.vaadin.sasha.videochat.client.login.LoginViewImpl;
+import org.vaadin.sasha.videochat.client.place.VideoChatPlaceHistoryMapper;
 import org.vaadin.sasha.videochat.client.serverconnection.PeerConnectionManager;
 import org.vaadin.sasha.videochat.client.serverconnection.ServerConnection;
 import org.vaadin.sasha.videochat.client.widget.VideoWidget;
@@ -43,19 +44,15 @@ public class VideoChatModule extends AbstractGinModule {
         
         bind(SimplePanel.class).in(Singleton.class);
         bind(EventBus.class).to(SimpleEventBus.class).in(Singleton.class);
-        bind(PlaceController.class).in(Singleton.class);
+        bind(PlaceController.class).toProvider(PlaceControllerProvider.class).asEagerSingleton();
         
         bind(ActivityMapper.class).to(VideoChatActivityMapper.class).in(Singleton.class);
         bind(PlaceHistoryMapper.class).to(VideoChatPlaceHistoryMapper.class).in(Singleton.class);
         
-        bind(ServerConnection.class).in(Singleton.class);
-        bind(PeerConnectionManager.class).in(Singleton.class);
-    }
-
-    @Provides
-    @Singleton
-    public PlaceController getPlaceController(EventBus eventBus) {
-        return new PlaceController(eventBus);
+        bind(SessionInfo.class).in(Singleton.class);
+        bind(HasOneWidget.class).to(SimplePanel.class);
+        bind(ServerConnection.class).asEagerSingleton();
+        bind(PeerConnectionManager.class).asEagerSingleton();
     }
 
     @Provides
@@ -71,7 +68,7 @@ public class VideoChatModule extends AbstractGinModule {
     public PlaceHistoryHandler getHistoryHandler(PlaceController placeController, PlaceHistoryMapper historyMapper, EventBus eventBus,
             ActivityManager activityManager) {
         PlaceHistoryHandler historyHandler = new PlaceHistoryHandler(historyMapper);
-        historyHandler.register(placeController, eventBus, new LoginPlace());
+        historyHandler.register(placeController, eventBus, new VideoChatPlace());
         return historyHandler;
     }
 }
