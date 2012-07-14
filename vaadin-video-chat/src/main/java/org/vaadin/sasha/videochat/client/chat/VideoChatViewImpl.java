@@ -1,4 +1,4 @@
-package org.vaadin.sasha.videochat.client.view;
+package org.vaadin.sasha.videochat.client.chat;
 
 import javax.inject.Inject;
 
@@ -19,7 +19,7 @@ import com.google.web.bindery.event.shared.EventBus;
 
 import elemental.dom.MediaStream;
 
-public class MainView extends FlowPanel implements RemoteStreamReceivedEvent.Handler, LocalStreamReceivedEvent.Handler {
+public class VideoChatViewImpl extends FlowPanel implements VideoChatView, RemoteStreamReceivedEvent.Handler, LocalStreamReceivedEvent.Handler {
 
     private VideoWidget localVideo;
 
@@ -36,7 +36,7 @@ public class MainView extends FlowPanel implements RemoteStreamReceivedEvent.Han
     private TextBox loginBox = new TextBox();
     
     @Inject
-    public MainView(final EventBus eventBus, ServerConnection connection, PeerConnectionManager manager, VideoWidget localVideo, VideoWidget remoteVideo) {
+    public VideoChatViewImpl(final EventBus eventBus, ServerConnection connection, PeerConnectionManager manager, VideoWidget localVideo, VideoWidget remoteVideo) {
         super();
         this.localVideo = localVideo;
         this.remoteVideo = remoteVideo;
