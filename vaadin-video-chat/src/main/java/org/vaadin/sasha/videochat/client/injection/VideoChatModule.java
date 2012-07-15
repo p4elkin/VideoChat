@@ -6,6 +6,9 @@ import org.vaadin.sasha.videochat.client.chat.VideoChatActivity;
 import org.vaadin.sasha.videochat.client.chat.VideoChatPlace;
 import org.vaadin.sasha.videochat.client.chat.VideoChatView;
 import org.vaadin.sasha.videochat.client.chat.VideoChatViewImpl;
+import org.vaadin.sasha.videochat.client.contacts.ContactsPresenter;
+import org.vaadin.sasha.videochat.client.contacts.ContactsView;
+import org.vaadin.sasha.videochat.client.contacts.ContactsViewImpl;
 import org.vaadin.sasha.videochat.client.login.LoginActivity;
 import org.vaadin.sasha.videochat.client.login.LoginView;
 import org.vaadin.sasha.videochat.client.login.LoginViewImpl;
@@ -41,6 +44,8 @@ public class VideoChatModule extends AbstractGinModule {
         // Views (singletons)
         bind(VideoChatView.class).to(VideoChatViewImpl.class).in(Singleton.class);
         bind(LoginView.class).to(LoginViewImpl.class).in(Singleton.class);
+        bind(ContactsView.class).to(ContactsViewImpl.class).in(Singleton.class);
+        bind(ContactsPresenter.class);
         
         bind(SimplePanel.class).in(Singleton.class);
         bind(EventBus.class).to(SimpleEventBus.class).in(Singleton.class);

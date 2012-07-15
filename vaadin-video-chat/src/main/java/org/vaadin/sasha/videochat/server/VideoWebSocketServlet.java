@@ -1,7 +1,6 @@
 package org.vaadin.sasha.videochat.server;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -22,8 +21,6 @@ public class VideoWebSocketServlet extends WebSocketServlet {
     private Logger logger = Logger.getLogger("org.vaadin.sasha.videochat.server.VideoWebSocketServlet");
     
     private Map<Integer, VideoChatSocket> idToSocket = new ConcurrentHashMap<Integer, VideoChatSocket>();
-    
-    //private List<VideoChatMessage> offers = new LinkedList<VideoChatMessage>();
             
     @Override
     public WebSocket doWebSocketConnect(HttpServletRequest request, String ignore) {
@@ -76,13 +73,6 @@ public class VideoWebSocketServlet extends WebSocketServlet {
         @Override
         public void onOpen(Connection connection) {
             this.connection = connection;
-            /*if (!offers.isEmpty()) {
-                try {
-                    connection.sendMessage(new Gson().toJson(offers.get(0)));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }*/
         }
 
         @Override
@@ -101,12 +91,4 @@ public class VideoWebSocketServlet extends WebSocketServlet {
             }
         }
     }
-
-
-    @Override
-    public boolean checkOrigin(HttpServletRequest request, String origin) {
-        return true;
-    }
-    
-
 }

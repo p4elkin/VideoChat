@@ -18,6 +18,8 @@ public class VaadinVideoChat implements EntryPoint {
         mainViewport.addStyleName("videochat");
         RootPanel.get().add(mainViewport);
         injector.getPlaceController().goTo(new LoginPlace());
+        
+        RootPanel.get().add(injector.getContactsView().asWidget());
     }
 
 }

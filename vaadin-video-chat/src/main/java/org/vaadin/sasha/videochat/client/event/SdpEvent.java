@@ -22,7 +22,7 @@ public class SdpEvent extends Event<SdpEvent.Handler>{
 
     @Override
     protected void dispatch(Handler handler) {
-        handler.onCandidate(this);
+        handler.onSDPEvent(this);
     }
     
     public VSDPMessage getMessage() {
@@ -30,7 +30,7 @@ public class SdpEvent extends Event<SdpEvent.Handler>{
     }
     
     public interface Handler {
-        void onCandidate(final SdpEvent event);
+        void onSDPEvent(final SdpEvent event);
     }
 
 }

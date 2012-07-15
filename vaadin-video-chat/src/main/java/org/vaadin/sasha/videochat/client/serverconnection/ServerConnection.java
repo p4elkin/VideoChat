@@ -62,7 +62,8 @@ public class ServerConnection implements SdpEvent.Handler, UserLogedInEvent.Hand
             @Override
             public void handleEvent(Event evt) {
                 final MessageEvent messageEvent = (MessageEvent) evt;
-                eventBus.fireEvent(new SocketEvent(String.valueOf(messageEvent.getData())));
+                final String data = String.valueOf(messageEvent.getData());
+                eventBus.fireEvent(new SocketEvent(data));
             }
         });
 
@@ -70,7 +71,7 @@ public class ServerConnection implements SdpEvent.Handler, UserLogedInEvent.Hand
     }
 
     @Override
-    public void onCandidate(SdpEvent event) {
+    public void onSDPEvent(SdpEvent event) {
         socket.send(Json.stringify(event.getMessage()));
     }
 

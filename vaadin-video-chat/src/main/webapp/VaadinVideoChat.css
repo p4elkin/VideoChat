@@ -4,7 +4,7 @@
 	top: 0;
 	bottom: 0;
 	left: 0;
-	right: 0;
+	right: 150px;
 }
 
 .remoteVideo {
@@ -28,6 +28,16 @@
 	position: absolute;
 	top: 50px;
 	left: 0;
+}
+
+.contacts {
+	width: 150px;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 10;
+	background: white;
 }
 
 .zoom-in {

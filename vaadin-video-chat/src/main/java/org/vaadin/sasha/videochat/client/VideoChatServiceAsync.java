@@ -1,5 +1,7 @@
 package org.vaadin.sasha.videochat.client;
 
+import java.util.List;
+
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
@@ -10,4 +12,6 @@ public interface VideoChatServiceAsync {
 	void login(String userName, String password, AsyncCallback<Integer> callback) throws IllegalArgumentException;
 
 	void createChatRoom(int creatorId, AsyncCallback<Integer> callback) throws IllegalArgumentException;
+	
+	void getUsersOnline(AsyncCallback<List<String>> callback);
 }
