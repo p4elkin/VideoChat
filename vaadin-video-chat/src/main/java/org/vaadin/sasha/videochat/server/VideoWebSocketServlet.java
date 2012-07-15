@@ -14,6 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.jetty.websocket.WebSocket;
 import org.eclipse.jetty.websocket.WebSocketServlet;
+import org.vaadin.sasha.videochat.server.event.UserOnlineStatusMessage;
+
+import com.google.gson.Gson;
 
 @SuppressWarnings("serial")
 public class VideoWebSocketServlet extends WebSocketServlet {
@@ -68,11 +71,37 @@ public class VideoWebSocketServlet extends WebSocketServlet {
                     idToSocket.remove(id);
                 }
             }
+            
+            final String message = new Gson().toJson(new UserOnlineStatusMessage(userId, false));
+            final Iterator<Map.Entry<Integer, VideoChatSocket>> it = idToSocket.entrySet().iterator();
+            while (it.hasNext()) {
+                final Entry<Integer, VideoChatSocket> entry = it.next();
+                if (userId != entry.getKey()) {
+                    try {
+                        entry.getValue().connection.sendMessage(message);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            
         }
 
         @Override
         public void onOpen(Connection connection) {
             this.connection = connection;
+            final String message = new Gson().toJson(new UserOnlineStatusMessage(userId, true));
+            final Iterator<Map.Entry<Integer, VideoChatSocket>> it = idToSocket.entrySet().iterator();
+            while (it.hasNext()) {
+                final Entry<Integer, VideoChatSocket> entry = it.next();
+                if (userId != entry.getKey()) {
+                    try {
+                        entry.getValue().connection.sendMessage(message);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
 
         @Override

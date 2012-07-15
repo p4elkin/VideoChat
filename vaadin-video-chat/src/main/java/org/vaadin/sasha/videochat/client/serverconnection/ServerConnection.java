@@ -1,10 +1,10 @@
 package org.vaadin.sasha.videochat.client.serverconnection;
 
 import org.vaadin.sasha.videochat.client.SessionInfo;
-import org.vaadin.sasha.videochat.client.data.VMessage;
 import org.vaadin.sasha.videochat.client.event.SessionDescriptionEvent;
 import org.vaadin.sasha.videochat.client.event.SocketEvent;
 import org.vaadin.sasha.videochat.client.event.UserLogedInEvent;
+import org.vaadin.sasha.videochat.client.message.VMessage;
 import org.vaadin.sasha.videochat.client.util.StringUtil;
 
 import com.google.gwt.core.client.GWT;
@@ -65,7 +65,6 @@ public class ServerConnection implements SessionDescriptionEvent.Handler, UserLo
                 final MessageEvent messageEvent = (MessageEvent) evt;
                 final String data = String.valueOf(messageEvent.getData());
                 final VMessage message = VMessage.parse(data);
-                final String type = message.getMessageType();
                 eventBus.fireEvent(new SocketEvent(message));
             }
         });

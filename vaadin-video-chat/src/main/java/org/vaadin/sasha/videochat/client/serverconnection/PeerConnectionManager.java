@@ -2,14 +2,14 @@ package org.vaadin.sasha.videochat.client.serverconnection;
 
 import javax.inject.Inject;
 
-import org.vaadin.sasha.videochat.client.data.VCandidateMessage;
-import org.vaadin.sasha.videochat.client.data.VNegotiationMessage;
-import org.vaadin.sasha.videochat.client.data.VSessionDescriptionMessage;
 import org.vaadin.sasha.videochat.client.event.LocalStreamReceivedEvent;
 import org.vaadin.sasha.videochat.client.event.RemoteStreamReceivedEvent;
 import org.vaadin.sasha.videochat.client.event.SessionDescriptionEvent;
 import org.vaadin.sasha.videochat.client.event.SocketEvent;
 import org.vaadin.sasha.videochat.client.event.SocketEvent.SocketHandlerAdapter;
+import org.vaadin.sasha.videochat.client.message.VCandidateMessage;
+import org.vaadin.sasha.videochat.client.message.VNegotiationMessage;
+import org.vaadin.sasha.videochat.client.message.VSessionDescriptionMessage;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.web.bindery.event.shared.EventBus;

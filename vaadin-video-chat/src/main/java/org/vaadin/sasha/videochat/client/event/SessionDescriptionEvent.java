@@ -1,6 +1,6 @@
 package org.vaadin.sasha.videochat.client.event;
 
-import org.vaadin.sasha.videochat.client.data.VSessionDescriptionMessage;
+import org.vaadin.sasha.videochat.client.message.VSessionDescriptionMessage;
 
 import com.google.web.bindery.event.shared.Event;
 

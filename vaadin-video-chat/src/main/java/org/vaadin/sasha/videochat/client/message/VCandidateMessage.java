@@ -1,4 +1,4 @@
-package org.vaadin.sasha.videochat.client.data;
+package org.vaadin.sasha.videochat.client.message;
 
 import elemental.html.IceCandidate;
 
@@ -8,7 +8,7 @@ public class VCandidateMessage extends VSessionDescriptionMessage {
     
     public static native final VCandidateMessage create(IceCandidate candidate) /*-{
        var result = {};
-       result.messageType = 'NEGOTIATION';
+       result.messageType = 'CANDIDATE';
        result.type = 'candidate';
        result.candidate = candidate.toSdp();
        result.label = candidate.label;

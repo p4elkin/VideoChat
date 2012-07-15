@@ -1,6 +1,6 @@
 package org.vaadin.sasha.videochat.client.event;
 
-import org.vaadin.sasha.videochat.client.data.VMessage;
+import org.vaadin.sasha.videochat.client.message.VMessage;
 
 import com.google.web.bindery.event.shared.Event;
 
@@ -23,7 +23,7 @@ public class SocketEvent extends Event<SocketEvent.Handler>{
     @Override
     protected void dispatch(Handler handler) {
         final String type = jsonMessage.getMessageType();
-        if ("NEGOTIATION".equals(type)) {
+        if ("NEGOTIATION".equals(type) || "CANDIDATE".equals(type)) {
            handler.onSessionDescriptionMessage(this);
         } else if ("CONTACTS".equals(type)) {
             handler.onContactListMessage(this);

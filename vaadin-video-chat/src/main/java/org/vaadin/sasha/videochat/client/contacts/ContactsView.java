@@ -8,7 +8,11 @@ public interface ContactsView extends IsWidget {
     
     void setContacts(List<String> result);
     
+    void userOnlineStatusChanged(int userId, boolean online);
+    
     interface Presenter {
+        
+        void setView(ContactsView view);
         
         void loadContacts();
         

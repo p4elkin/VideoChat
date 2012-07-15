@@ -1,4 +1,4 @@
-package org.vaadin.sasha.videochat.client.data;
+package org.vaadin.sasha.videochat.client.message;
 
 
 public abstract class VSessionDescriptionMessage extends VMessage {

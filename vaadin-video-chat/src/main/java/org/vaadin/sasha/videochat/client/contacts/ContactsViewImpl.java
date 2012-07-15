@@ -17,6 +17,7 @@ public class ContactsViewImpl extends FlowPanel implements ContactsView {
     public ContactsViewImpl(final ContactsPresenter presenter) {
         super();
         this.presenter = presenter;
+        presenter.setView(this);
         add(usersOnline);
         usersOnline.addStyleName("contacts");
     }
@@ -31,6 +32,19 @@ public class ContactsViewImpl extends FlowPanel implements ContactsView {
     public void setContacts(List<String> result) {
         for (final String userName : result) {
             usersOnline.addItem(userName);   
+        }
+    }
+
+    @Override
+    public void userOnlineStatusChanged(int userId, boolean online) {
+        if (online) {
+            usersOnline.addItem(String.valueOf(userId));
+        } else {
+            for (int i = 0; i < usersOnline.getItemCount(); ++i) {
+                if (usersOnline.getItemText(i).equals(String.valueOf(userId))) {
+                    usersOnline.removeItem(i);      
+                }
+            }
         }
     }
     
