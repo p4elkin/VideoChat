@@ -2,7 +2,7 @@ package org.vaadin.sasha.videochat.client.data;
 
 import elemental.html.SessionDescription;
 
-public class VNegotiationMessage extends VSDPMessage {
+public class VNegotiationMessage extends VSessionDescriptionMessage {
 
     protected VNegotiationMessage() {}
     
@@ -14,6 +14,7 @@ public class VNegotiationMessage extends VSDPMessage {
         var result = {};
         result.sdp = sdp.toSdp();
         result.type = isOffer ? 'offer' : 'answer';
+        result.messageType = 'NEGOTIATION';
         return result;
     }-*/;
 

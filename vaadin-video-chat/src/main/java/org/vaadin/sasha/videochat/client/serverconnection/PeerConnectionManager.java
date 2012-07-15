@@ -4,11 +4,12 @@ import javax.inject.Inject;
 
 import org.vaadin.sasha.videochat.client.data.VCandidateMessage;
 import org.vaadin.sasha.videochat.client.data.VNegotiationMessage;
-import org.vaadin.sasha.videochat.client.data.VSDPMessage;
+import org.vaadin.sasha.videochat.client.data.VSessionDescriptionMessage;
 import org.vaadin.sasha.videochat.client.event.LocalStreamReceivedEvent;
 import org.vaadin.sasha.videochat.client.event.RemoteStreamReceivedEvent;
-import org.vaadin.sasha.videochat.client.event.SdpEvent;
+import org.vaadin.sasha.videochat.client.event.SessionDescriptionEvent;
 import org.vaadin.sasha.videochat.client.event.SocketEvent;
+import org.vaadin.sasha.videochat.client.event.SocketEvent.SocketHandlerAdapter;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -24,7 +25,7 @@ import elemental.html.PeerConnection00;
 import elemental.html.SessionDescription;
 import elemental.util.Mappable;
 
-public class PeerConnectionManager implements SocketEvent.Handler, LocalStreamReceivedEvent.Handler {
+public class PeerConnectionManager implements LocalStreamReceivedEvent.Handler {
 
     private final static String STUN_SERVER = "STUN stun.l.google.com:19302";
 
@@ -34,11 +35,33 @@ public class PeerConnectionManager implements SocketEvent.Handler, LocalStreamRe
 
     private PeerConnection00 peerConnection;
 
+    private SocketHandlerAdapter socketHandler = new SocketHandlerAdapter() {
+        
+        @Override
+        public void onSessionDescriptionMessage(SocketEvent event) {
+            final VSessionDescriptionMessage message = event.getJson().cast();
+            final String type = message.getSDPType();
+            if ("candidate".equals(type)) {
+                final VCandidateMessage candidateMessage = message.cast();
+                final IceCandidate candidate = Browser.getWindow().newIceCandidate(candidateMessage.getLabel(), candidateMessage.getSdp());
+                peerConnection.processIceMessage(candidate);
+            } else if ("offer".equals(type)) {
+                final VNegotiationMessage negMessage = message.cast();
+                initiatePeerConnection();
+                setRemoteDescription(getSessionDescription(negMessage.getSdp()), PeerConnection00.SDP_OFFER);
+                answer();
+            } else if ("answer".equals(type)) {
+                final VNegotiationMessage negMessage = message.cast();
+                setRemoteDescription(getSessionDescription(negMessage.getSdp()), PeerConnection00.SDP_ANSWER);
+            }
+        }
+    };
+    
     @Inject
     public PeerConnectionManager(final EventBus eventBus) {
         this.eventBus = eventBus;
         this.eventBus.addHandler(LocalStreamReceivedEvent.TYPE, this);
-        this.eventBus.addHandler(SocketEvent.TYPE, this);
+        this.eventBus.addHandler(SocketEvent.TYPE, socketHandler);
     }
 
     public void call() {
@@ -48,7 +71,7 @@ public class PeerConnectionManager implements SocketEvent.Handler, LocalStreamRe
         setLocalDescription(offer, PeerConnection00.SDP_OFFER);
         final VNegotiationMessage message = VNegotiationMessage.create(offer, true);
         Browser.getWindow().getConsole().log("Sending offer" + offer.toSdp());
-        eventBus.fireEvent(new SdpEvent(message));
+        eventBus.fireEvent(new SessionDescriptionEvent(message));
         peerConnection.startIce();
     }
 
@@ -57,7 +80,7 @@ public class PeerConnectionManager implements SocketEvent.Handler, LocalStreamRe
         final SessionDescription answer = peerConnection.createAnswer(offer.toSdp(), getMediaHints());
         Browser.getWindow().getConsole().log("Sending answer: " + answer.toSdp());
         setLocalDescription(answer, PeerConnection00.SDP_ANSWER);
-        eventBus.fireEvent(new SdpEvent(VNegotiationMessage.create(answer, false)));
+        eventBus.fireEvent(new SessionDescriptionEvent(VNegotiationMessage.create(answer, false)));
         peerConnection.startIce();
     }
     
@@ -68,7 +91,7 @@ public class PeerConnectionManager implements SocketEvent.Handler, LocalStreamRe
                 if (candidate != null) {
                     Browser.getWindow().getConsole().log("Candidate. " + candidate.toSdp());
                     final VCandidateMessage message = VCandidateMessage.create(candidate);
-                    eventBus.fireEvent(new SdpEvent(message));
+                    eventBus.fireEvent(new SessionDescriptionEvent(message));
                 }
                 return moreToFollow;
             }
@@ -108,25 +131,6 @@ public class PeerConnectionManager implements SocketEvent.Handler, LocalStreamRe
         if (localStream != null) {
             Browser.getWindow().getConsole().log("Adding local stream.");
             peerConnection.addStream(localStream);
-        }
-    }
-
-    @Override
-    public void onSocketMessage(SocketEvent event) {
-        final VSDPMessage message = VSDPMessage.parse(event.getJson());
-        final String type = message.getType();
-        if ("candidate".equals(type)) {
-            final VCandidateMessage candidateMessage = message.cast();
-            final IceCandidate candidate = Browser.getWindow().newIceCandidate(candidateMessage.getLabel(), candidateMessage.getSdp());
-            peerConnection.processIceMessage(candidate);
-        } else if ("offer".equals(type)) {
-            final VNegotiationMessage negMessage = message.cast();
-            initiatePeerConnection();
-            setRemoteDescription(getSessionDescription(negMessage.getSdp()), PeerConnection00.SDP_OFFER);
-            answer();
-        } else if ("answer".equals(type)) {
-            final VNegotiationMessage negMessage = message.cast();
-            setRemoteDescription(getSessionDescription(negMessage.getSdp()), PeerConnection00.SDP_ANSWER);
         }
     }
 

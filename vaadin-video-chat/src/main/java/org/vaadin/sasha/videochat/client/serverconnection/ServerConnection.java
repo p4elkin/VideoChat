@@ -1,7 +1,8 @@
 package org.vaadin.sasha.videochat.client.serverconnection;
 
 import org.vaadin.sasha.videochat.client.SessionInfo;
-import org.vaadin.sasha.videochat.client.event.SdpEvent;
+import org.vaadin.sasha.videochat.client.data.VMessage;
+import org.vaadin.sasha.videochat.client.event.SessionDescriptionEvent;
 import org.vaadin.sasha.videochat.client.event.SocketEvent;
 import org.vaadin.sasha.videochat.client.event.UserLogedInEvent;
 import org.vaadin.sasha.videochat.client.util.StringUtil;
@@ -18,7 +19,7 @@ import elemental.events.MessageEvent;
 import elemental.html.WebSocket;
 import elemental.js.util.Json;
 
-public class ServerConnection implements SdpEvent.Handler, UserLogedInEvent.Handler {
+public class ServerConnection implements SessionDescriptionEvent.Handler, UserLogedInEvent.Handler {
     
     private final EventBus eventBus;
     
@@ -30,7 +31,7 @@ public class ServerConnection implements SdpEvent.Handler, UserLogedInEvent.Hand
     public ServerConnection(final EventBus eventBus, final SessionInfo sessionInfo) {
         this.sessionInfo = sessionInfo;
         this.eventBus = eventBus;
-        this.eventBus.addHandler(SdpEvent.TYPE, this);
+        this.eventBus.addHandler(SessionDescriptionEvent.TYPE, this);
         this.eventBus.addHandler(UserLogedInEvent.TYPE, this);
     }
 
@@ -63,7 +64,9 @@ public class ServerConnection implements SdpEvent.Handler, UserLogedInEvent.Hand
             public void handleEvent(Event evt) {
                 final MessageEvent messageEvent = (MessageEvent) evt;
                 final String data = String.valueOf(messageEvent.getData());
-                eventBus.fireEvent(new SocketEvent(data));
+                final VMessage message = VMessage.parse(data);
+                final String type = message.getMessageType();
+                eventBus.fireEvent(new SocketEvent(message));
             }
         });
 
@@ -71,7 +74,7 @@ public class ServerConnection implements SdpEvent.Handler, UserLogedInEvent.Hand
     }
 
     @Override
-    public void onSDPEvent(SdpEvent event) {
+    public void onSessionDescriptionEvent(SessionDescriptionEvent event) {
         socket.send(Json.stringify(event.getMessage()));
     }
 

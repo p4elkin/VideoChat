@@ -1,16 +1,16 @@
 package org.vaadin.sasha.videochat.client.event;
 
-import org.vaadin.sasha.videochat.client.data.VSDPMessage;
+import org.vaadin.sasha.videochat.client.data.VSessionDescriptionMessage;
 
 import com.google.web.bindery.event.shared.Event;
 
-public class SdpEvent extends Event<SdpEvent.Handler>{
+public class SessionDescriptionEvent extends Event<SessionDescriptionEvent.Handler>{
 
     public final static Type<Handler> TYPE = new Type<Handler>();
     
-    public VSDPMessage message;
+    public VSessionDescriptionMessage message;
     
-    public SdpEvent(VSDPMessage message) {
+    public SessionDescriptionEvent(VSessionDescriptionMessage message) {
         super();
         this.message = message;
     }
@@ -22,15 +22,15 @@ public class SdpEvent extends Event<SdpEvent.Handler>{
 
     @Override
     protected void dispatch(Handler handler) {
-        handler.onSDPEvent(this);
+        handler.onSessionDescriptionEvent(this);
     }
     
-    public VSDPMessage getMessage() {
+    public VSessionDescriptionMessage getMessage() {
         return message;
     }
     
     public interface Handler {
-        void onSDPEvent(final SdpEvent event);
+        void onSessionDescriptionEvent(final SessionDescriptionEvent event);
     }
 
 }
