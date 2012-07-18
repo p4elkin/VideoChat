@@ -4,26 +4,17 @@
     "http://java.sun.com/dtd/web-app_2_3.dtd">
 
 <web-app>
-	<!--  <listener>
-        <listener-class>org.vaadin.sasha.videochat.server.VideoChatListener</listener-class>
-    </listener>-->
-	<servlet>
-		<servlet-name>greetServlet</servlet-name>
-		<servlet-class>org.vaadin.sasha.videochat.server.VideoChatServiceImpl</servlet-class>
-	</servlet>
-	<servlet>
-		<servlet-name>socketServlet</servlet-name>
-		<servlet-class>org.vaadin.sasha.videochat.server.VideoWebSocketServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>greetServlet</servlet-name>
-		<url-pattern>/VaadinVideoChat/greet</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>socketServlet</servlet-name>
-		<url-pattern>/VaadinVideoChat/socket/*</url-pattern>
-	</servlet-mapping>
-	<!-- Default page to serve -->
+	<filter>
+		<filter-name>guiceFilter</filter-name>
+		<filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>guiceFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<listener>
+  		<listener-class>org.vaadin.sasha.videochat.server.guice.VideoChatGuiceServletConfig</listener-class>
+	</listener>
 	<welcome-file-list>
 		<welcome-file>VaadinVideoChat.html</welcome-file>
 	</welcome-file-list>
