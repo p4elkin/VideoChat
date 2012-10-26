@@ -1,18 +1,20 @@
 package org.vaadin.sasha.videochat.server.service.user;
 
-import org.vaadin.sasha.videochat.server.User;
+import org.vaadin.sasha.videochat.shared.domain.User;
 
 public interface UserService {
 
     User authenticate(String username, String password);
     
-    Iterable<User> getContactsList(int userId);
+    User registerUser(User newUser);
     
-    Iterable<User> getUsersOnline(int userId);
+    Iterable<User> getContactsList();
     
-    void setUserOnline(int id);
+    Iterable<User> getUsersOnline();
     
-    void setUserOffline(int id);
+    void setUserOnline();
+    
+    void setUserOffline();
 
-    User getUserById(int userId);
+    int getCurrentUserId();
 }

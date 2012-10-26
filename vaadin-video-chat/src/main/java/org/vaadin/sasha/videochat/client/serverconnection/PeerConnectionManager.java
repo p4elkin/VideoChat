@@ -34,25 +34,22 @@ public class PeerConnectionManager implements LocalStreamReceivedEvent.Handler {
     private LocalMediaStream localStream;
 
     private PeerConnection00 peerConnection;
-
+    
     private SocketHandlerAdapter socketHandler = new SocketHandlerAdapter() {
         
         @Override
         public void onSessionDescriptionMessage(SocketEvent event) {
             final VSessionDescriptionMessage message = event.getJson().cast();
             final String type = message.getSDPType();
-            if ("candidate".equals(type)) {
+            if ("candidate".equals(type) && peerConnection != null) {
                 final VCandidateMessage candidateMessage = message.cast();
                 final IceCandidate candidate = Browser.getWindow().newIceCandidate(candidateMessage.getLabel(), candidateMessage.getSdp());
                 peerConnection.processIceMessage(candidate);
             } else if ("offer".equals(type)) {
-                final VNegotiationMessage negMessage = message.cast();
-                initiatePeerConnection();
-                setRemoteDescription(getSessionDescription(negMessage.getSdp()), PeerConnection00.SDP_OFFER);
-                answer();
             } else if ("answer".equals(type)) {
                 final VNegotiationMessage negMessage = message.cast();
                 setRemoteDescription(getSessionDescription(negMessage.getSdp()), PeerConnection00.SDP_ANSWER);
+                peerConnection.startIce();
             }
         }
     };
@@ -64,6 +61,12 @@ public class PeerConnectionManager implements LocalStreamReceivedEvent.Handler {
         this.eventBus.addHandler(SocketEvent.TYPE, socketHandler);
     }
 
+    public void acceptCall(final VNegotiationMessage offer) {
+        initiatePeerConnection();
+        setRemoteDescription(getSessionDescription(offer.getSdp()), PeerConnection00.SDP_OFFER);
+        answer();
+    }
+    
     public void call() {
         initiatePeerConnection();
         final Mappable hints = getMediaHints();
@@ -72,7 +75,6 @@ public class PeerConnectionManager implements LocalStreamReceivedEvent.Handler {
         final VNegotiationMessage message = VNegotiationMessage.create(offer, true);
         Browser.getWindow().getConsole().log("Sending offer" + offer.toSdp());
         eventBus.fireEvent(new SessionDescriptionEvent(message));
-        peerConnection.startIce();
     }
 
     private void answer() {

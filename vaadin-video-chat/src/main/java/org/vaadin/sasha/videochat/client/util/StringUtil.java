@@ -14,6 +14,6 @@ public class StringUtil {
 
     public static String prepareWsUrl(int userId) {
         final Location location = Browser.getDocument().getLocation();
-        return "ws://" + location.getHost() + "/VaadinVideoChat/socket/" + userId;
+        return "ws://" + location.getHost() + "/video-chat/socket/1";
     }
 }

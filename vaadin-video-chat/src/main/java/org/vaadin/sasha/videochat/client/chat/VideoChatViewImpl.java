@@ -2,12 +2,15 @@ package org.vaadin.sasha.videochat.client.chat;
 
 import javax.inject.Inject;
 
+import org.vaadin.sasha.videochat.client.chat.dialog.IncomingCallDialogView;
+import org.vaadin.sasha.videochat.client.dialog.DialogAction;
 import org.vaadin.sasha.videochat.client.widget.VideoWidget;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.inject.Provider;
 
 import elemental.dom.MediaStream;
 
@@ -17,9 +20,17 @@ public class VideoChatViewImpl extends FlowPanel implements VideoChatView {
 
     private VideoWidget remoteVideo;
 
-    private Button connectButton;
-
     private Presenter presenter;
+    
+    @Inject
+    private Provider<IncomingCallDialogView> dialogProvider;
+    
+    private Button connectButton = new Button("Connect", new ClickHandler() {
+        @Override
+        public void onClick(ClickEvent arg0) {
+            presenter.makeCall();
+        }
+    });
     
     @Inject
     public VideoChatViewImpl(VideoWidget localVideo, VideoWidget remoteVideo) {
@@ -37,13 +48,6 @@ public class VideoChatViewImpl extends FlowPanel implements VideoChatView {
 
         localVideo.getElement().setId("localVideo");
         remoteVideo.getElement().setId("remoteVideo");
-
-        connectButton = new Button("Connect", new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent arg0) {
-                presenter.makeCall();
-            }
-        });
         
         connectButton.addStyleName("create-room-button");
         add(connectButton);
@@ -69,11 +73,20 @@ public class VideoChatViewImpl extends FlowPanel implements VideoChatView {
         remoteVideo.setMediaStream(remoteStream);
         remoteVideo.play();
         remoteVideo.addStyleName("remoteVideo");
+        remoteVideo.addStyleName("fullscreen");
         remoteVideo.addStyleName("zoom-in");
 
         localVideo.removeStyleName("fullscreen");
         localVideo.removeStyleName("zoom-in");
         shrinkLocalVideo();
         connectButton.setVisible(false);        
+    }
+
+    @Override
+    public void showIncomingCallDialog(DialogAction acceptAction, DialogAction rejectAction) {
+        final IncomingCallDialogView dialogView = dialogProvider.get();
+        dialogView.setAcceptCallAction(acceptAction);
+        dialogView.setRejectCallAction(rejectAction);
+        dialogView.show();
     }
 }

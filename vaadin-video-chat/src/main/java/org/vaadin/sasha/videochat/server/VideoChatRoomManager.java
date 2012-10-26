@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.vaadin.sasha.videochat.shared.domain.User;
+
+
 
 @SuppressWarnings("serial")
 public class VideoChatRoomManager implements Serializable {
@@ -41,7 +44,6 @@ public class VideoChatRoomManager implements Serializable {
         if (user == null) {
             int userId = USER_ID_COUNTER++;
             user = new User();
-            user.setUserId(userId);
             user.setUserName(userName);
             users.put(userName, user);
         }

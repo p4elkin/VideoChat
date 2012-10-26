@@ -36,7 +36,6 @@ public class ContactsPresenter implements ContactsView.Presenter {
     public ContactsPresenter(VideoChatServiceAsync service, EventBus eventBus) {
         this.service = service;
         eventBus.addHandler(SocketEvent.TYPE, handler);
-        Browser.getWindow().alert("Creating contacts presenter!");
     }
 
     @Override

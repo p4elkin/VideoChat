@@ -6,6 +6,8 @@ import org.vaadin.sasha.videochat.client.chat.VideoChatActivity;
 import org.vaadin.sasha.videochat.client.chat.VideoChatPlace;
 import org.vaadin.sasha.videochat.client.chat.VideoChatView;
 import org.vaadin.sasha.videochat.client.chat.VideoChatViewImpl;
+import org.vaadin.sasha.videochat.client.chat.dialog.IncomingCallDialogView;
+import org.vaadin.sasha.videochat.client.chat.dialog.IncomingCallDialogViewImpl;
 import org.vaadin.sasha.videochat.client.contacts.ContactsPresenter;
 import org.vaadin.sasha.videochat.client.contacts.ContactsView;
 import org.vaadin.sasha.videochat.client.contacts.ContactsViewImpl;
@@ -40,7 +42,7 @@ public class VideoChatModule extends AbstractGinModule {
         // Activities
         bind(VideoChatActivity.class);
         bind(LoginActivity.class);
-
+        
         // Views (singletons)
         bind(VideoChatView.class).to(VideoChatViewImpl.class).in(Singleton.class);
         bind(LoginView.class).to(LoginViewImpl.class).in(Singleton.class);
@@ -50,6 +52,9 @@ public class VideoChatModule extends AbstractGinModule {
         bind(SimplePanel.class).in(Singleton.class);
         bind(EventBus.class).to(SimpleEventBus.class).in(Singleton.class);
         bind(PlaceController.class).toProvider(PlaceControllerProvider.class).asEagerSingleton();
+        
+        //Dialogs
+        bind(IncomingCallDialogView.class).to(IncomingCallDialogViewImpl.class);
         
         bind(ActivityMapper.class).to(VideoChatActivityMapper.class).in(Singleton.class);
         bind(PlaceHistoryMapper.class).to(VideoChatPlaceHistoryMapper.class).in(Singleton.class);

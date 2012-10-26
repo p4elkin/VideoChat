@@ -1,3 +1,44 @@
+@import url(login.css)
+
+@font-face{
+    font-family: DinRound;
+    src: url("fonts/dinroundmedium.woff") format("woff");
+    font-weight:bold;
+}
+
+/* first for IE 4Ð8 */
+@font-face {
+    font-family: DINWebPro-Medium;
+    src: url("fonts/DINWebPro-Medium.eot");
+}
+/* then for WOFF-capable browsers */
+@font-face {
+    font-family: DINWebPro-Medium;
+    src: url("fonts/DINWebPro-Medium.woff") format("woff");
+}
+
+/* first for IE 4Ð8 */
+@font-face {
+    font-family: DINWebPro;
+    src: url("fonts/DINWebPro.eot");
+}
+/* then for WOFF-capable browsers */
+@font-face {
+    font-family: DINWebPro;
+    src: url("fonts/DINWebPro.woff") format("woff");
+}
+
+.clearfix:before, .clearfix:after { content: ""; display: table; }
+.clearfix:after { clear: both; }
+.clearfix { *zoom: 1; }
+
+.dialog {
+	z-index: 2000;
+	left: 250px;
+	top: 250px;
+	position: absolute;
+}
+
 .videochat {
 	background-color: #000000;
 	position: absolute;
@@ -74,3 +115,59 @@
 	left: 0;
 	z-index: 1000;
 }
+
+
+/**LOGIN VIEW**/
+.login-view {
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	background-color: white;
+	position: absolute;
+	background: -webkit-linear-gradient(top, #0B86BC 0%, #7BC3E2 100%); 
+}
+
+.login-form {
+	margin-top: 200px;
+	width: 500px;
+	position: absolute;
+	left: 50%;
+	margin-left: -250px;
+}
+
+.login-form .footer {
+	text-align: center;
+}
+
+.labeled-textfield {
+	text-align: left;
+}
+
+
+.labeled-textfield .label {
+	color: #555555;
+    font-family: DINWebPro-Medium;
+    font-size: 15px;
+    padding-top: 12px;
+    display: inline-block;
+    width: 100px;
+    text-align: right;
+    padding-right: 10px;
+}
+
+.labeled-textfield .field {
+	background: #EEEEEE;
+    border: 1px solid #EEEEEE;
+    border-radius: 0 0 0 0;
+    color: #888888;
+    display: inline;
+    font-family: DINWebPro-Medium;
+    font-size: 17px;
+    margin-bottom: 10px;
+    padding: 10px;
+    width: 278px;
+}
+
+
+/**LOGIN VIEW END**/
