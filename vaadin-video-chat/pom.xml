@@ -10,18 +10,19 @@
 	<name>Vaadin Video Chat</name>
 
 	<properties>
-		<gwtVersion>2.5.0-rc1</gwtVersion>
-		<atmosphere.version>1.0.0-SNAPSHOT</atmosphere.version>
+		<maven.compiler.source>1.5</maven.compiler.source>
+		<maven.compiler.target>1.5</maven.compiler.target>
+		<gwtVersion>2.5.0</gwtVersion>
 		<jetty.version>8.0.1.v20110908</jetty.version>
 		<webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<eclipselink.version>2.4.0</eclipselink.version>
 	</properties>
 
 	<repositories>
 		<repository>
-			<id>glassfish-maven-repository.dev.java.net</id>
-			<name>GlassFish Maven Repository</name>
-			<url>http://download.java.net/maven/glassfish</url>
+			<id>EclipseLink</id>
+			<url>http://download.eclipse.org/rt/eclipselink/maven.repo</url>
 		</repository>
 	</repositories>
 
@@ -111,30 +112,23 @@
 			<artifactId>guava</artifactId>
 			<version>12.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<version>2.2.8</version>
+		</dependency>
 
+		<!-- eclipselink.jar with dependencies except commonj.sdo -->
 		<dependency>
-			<groupId>com.orientechnologies</groupId>
-			<artifactId>orient-commons</artifactId>
-			<version>1.0.1</version>
-			<type>bundle</type>
-		</dependency>
-		<dependency>
-			<groupId>com.orientechnologies</groupId>
-			<artifactId>orientdb-core</artifactId>
-			<version>1.0.1</version>
-			<type>bundle</type>
-		</dependency>
-		<dependency>
-			<groupId>com.orientechnologies</groupId>
-			<artifactId>orientdb-client</artifactId>
-			<version>1.0.1</version>
-			<type>bundle</type>
-		</dependency>
-		<dependency>
-			<groupId>com.orientechnologies</groupId>
-			<artifactId>orientdb-object</artifactId>
-			<version>1.0.1</version>
-			<type>bundle</type>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>eclipselink</artifactId>
+			<version>${eclipselink.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>commonj.sdo</artifactId>
+					<groupId>commonj.sdo</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 
@@ -143,12 +137,6 @@
 		<outputDirectory>${webappDirectory}/WEB-INF/classes</outputDirectory>
 
 		<plugins>
-			<plugin>
-				<groupId>org.apache.felix</groupId>
-				<artifactId>maven-bundle-plugin</artifactId>
-				<version>2.3.6</version>
-				<extensions>true</extensions>
-			</plugin>
 			<!-- GWT Maven Plugin -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -236,7 +224,7 @@
 					</execution>
 				</executions>
 			</plugin>
-
 		</plugins>
 	</build>
+
 </project>

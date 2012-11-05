@@ -64,7 +64,7 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
     @Override
     public void signIn() {
         final User user = new User();
-        user.setPassword(password);
+        //user.setPassword(password);
         user.setUserName(userName);
         service.signIn(user, new AsyncCallback<Integer>() {
             
@@ -86,7 +86,7 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
     @Override
     public void register() {
         final User user = new User();
-        user.setPassword(password);
+        //user.setPassword(password);
         user.setUserName(userName);
         service.register(user, new AsyncCallback<Integer>() {
             

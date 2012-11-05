@@ -1,0 +1,30 @@
+.login-view {
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	background-color: white; 
+}
+
+.labeled-textfield .label {
+	display: inline-block;
+	padding-right: 10px;
+    text-align: right;
+    width: 140px;
+    color: black;
+}
+
+.labeled-textfield .field {
+	background: #EEEEEE;
+    border: 1px solid #EEEEEE;
+    border-radius: 0 0 0 0;
+    color: #888888;
+    display: inline;
+    float: left;
+    font-family: DINWebPro-Medium;
+    font-size: 17px;
+    margin-bottom: 10px;
+    padding: 10px;
+    width: 278px;
+}
+

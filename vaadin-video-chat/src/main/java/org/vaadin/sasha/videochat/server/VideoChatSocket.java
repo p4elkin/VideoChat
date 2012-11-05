@@ -18,7 +18,6 @@ import com.google.gson.Gson;
 import com.google.inject.Key;
 import com.google.inject.Provider;
 import com.google.inject.servlet.ServletScopes;
-import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
 
 public class VideoChatSocket implements WebSocket.OnTextMessage {
 
@@ -102,8 +101,8 @@ public class VideoChatSocket implements WebSocket.OnTextMessage {
     private <T> void executeAsRequestScoped(final Callable<T> command) {
         try {
             ServletScopes.scopeRequest(new Callable<T>() {
-                @Inject
-                private OObjectDatabaseTx database;
+                //@Inject
+                //private OObjectDatabaseTx database;
 
                 @Override
                 public T call() throws Exception {
@@ -115,7 +114,7 @@ public class VideoChatSocket implements WebSocket.OnTextMessage {
                         return null;
                     }
                     finally {
-                        database.close();
+                        //database.close();
                     }
                     return result;
                 }

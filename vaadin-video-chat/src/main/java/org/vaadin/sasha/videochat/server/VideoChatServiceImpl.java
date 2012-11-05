@@ -36,7 +36,7 @@ public class VideoChatServiceImpl extends RemoteServiceServlet implements VideoC
 
     public int signIn(User user) throws IllegalArgumentException {
         final UserService userService = userServiceProvider.get(); 
-        User foundUser = userService.authenticate(user.getUserName(), user.getPassword());
+        User foundUser = userService.authenticate(user.getUserName(), ""/*user.getPassword()*/);
         sessionProvider.get().setAttribute("user", foundUser);
         return userServiceProvider.get().getCurrentUserId();
     }
