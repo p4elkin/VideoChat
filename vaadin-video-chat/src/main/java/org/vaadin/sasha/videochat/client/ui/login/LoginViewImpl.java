@@ -1,4 +1,4 @@
-package org.vaadin.sasha.videochat.client.login;
+package org.vaadin.sasha.videochat.client.ui.login;
 
 import org.vaadin.sasha.videochat.client.widget.LabeledTextBox;
 
@@ -22,10 +22,6 @@ public class LoginViewImpl extends ComplexPanel implements LoginView {
     
     private LabeledTextBox userNameField = new LabeledTextBox("Login");
     
-    private LabeledTextBox passwordField = new LabeledTextBox("Password");
-
-    private LabeledTextBox duplicatePasswordField = new LabeledTextBox("Once again");
-    
     private LabeledTextBox emailField = new LabeledTextBox("Email");
    
     private Element root = DOM.createDiv();
@@ -42,8 +38,36 @@ public class LoginViewImpl extends ComplexPanel implements LoginView {
         setElement(root);
         addStyleName("login-view");
         footer.addClassName("footer");
-        add(userNameField, fields);
-        add(passwordField, fields);
+        
+        add(emailField, fields);
+       
+        
+        root.appendChild(form);
+        form.appendChild(fields);
+        form.appendChild(footer);
+        form.addClassName("login-form");
+        
+        add(register, footer);
+        add(loginButton, footer);
+        
+        bindHandlers();
+    }
+    
+    private void bindHandlers() {
+        userNameField.addValueChangeHandler(new ValueChangeHandler<String>() {
+            @Override
+            public void onValueChange(ValueChangeEvent<String> event) {
+                presenter.setUserName(event.getValue());
+            }
+        });
+        
+        emailField.addValueChangeHandler(new ValueChangeHandler<String>() {
+            @Override
+            public void onValueChange(ValueChangeEvent<String> event) {
+                presenter.setEmail(event.getValue());
+            }
+        });
+        
         loginButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
@@ -59,48 +83,12 @@ public class LoginViewImpl extends ComplexPanel implements LoginView {
             @Override
             public void onClick(ClickEvent event) {
                 isRegistering = true;
-                add(duplicatePasswordField, fields);
-                add(emailField, fields);
+                add(userNameField, fields);        
             }
         });
         
-        root.appendChild(form);
-        form.appendChild(fields);
-        form.appendChild(footer);
-        form.addClassName("login-form");
-        
-        add(register, footer);
-        add(loginButton, footer);
-        
-        userNameField.addValueChangeHandler(new ValueChangeHandler<String>() {
-            @Override
-            public void onValueChange(ValueChangeEvent<String> event) {
-                presenter.setUserName(event.getValue());
-            }
-        });
-        
-        passwordField.addValueChangeHandler(new ValueChangeHandler<String>() {
-            @Override
-            public void onValueChange(ValueChangeEvent<String> event) {
-                presenter.setPassword(event.getValue());
-            }
-        });
-        
-        duplicatePasswordField.addValueChangeHandler(new ValueChangeHandler<String>() {
-            @Override
-            public void onValueChange(ValueChangeEvent<String> event) {
-                presenter.setDuplicatePassword(event.getValue());
-            }
-        });
-        
-        emailField.addValueChangeHandler(new ValueChangeHandler<String>() {
-            @Override
-            public void onValueChange(ValueChangeEvent<String> event) {
-                presenter.setEmail(event.getValue());
-            }
-        });
     }
-    
+
     @Override
     public void setPresenter(Presenter presenter) {
         this.presenter = presenter;

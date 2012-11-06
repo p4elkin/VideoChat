@@ -1,6 +1,6 @@
-package org.vaadin.sasha.videochat.client.login;
+package org.vaadin.sasha.videochat.client.ui.login;
 
-import org.vaadin.sasha.videochat.client.place.BaseTokenizer;
+import org.vaadin.sasha.videochat.client.framework.place.BaseTokenizer;
 
 import com.google.gwt.place.shared.Prefix;
 

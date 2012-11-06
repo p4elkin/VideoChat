@@ -1,15 +1,15 @@
-package org.vaadin.sasha.videochat.client.chat;
+package org.vaadin.sasha.videochat.client.ui.chat;
 
 import javax.inject.Inject;
 
-import org.vaadin.sasha.videochat.client.dialog.DialogAction;
-import org.vaadin.sasha.videochat.client.dialog.DialogView;
 import org.vaadin.sasha.videochat.client.event.RemoteStreamReceivedEvent;
 import org.vaadin.sasha.videochat.client.event.SocketEvent;
 import org.vaadin.sasha.videochat.client.event.SocketEvent.SocketHandlerAdapter;
 import org.vaadin.sasha.videochat.client.message.VNegotiationMessage;
 import org.vaadin.sasha.videochat.client.message.VSessionDescriptionMessage;
 import org.vaadin.sasha.videochat.client.serverconnection.PeerConnectionManager;
+import org.vaadin.sasha.videochat.client.ui.dialog.DialogAction;
+import org.vaadin.sasha.videochat.client.ui.dialog.DialogView;
 
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;

@@ -1,4 +1,4 @@
-package org.vaadin.sasha.videochat.client.dialog;
+package org.vaadin.sasha.videochat.client.ui.dialog;
 
 import com.google.gwt.user.client.ui.IsWidget;
 

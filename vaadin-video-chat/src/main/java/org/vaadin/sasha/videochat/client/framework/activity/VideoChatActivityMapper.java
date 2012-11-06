@@ -1,11 +1,11 @@
-package org.vaadin.sasha.videochat.client.activity;
+package org.vaadin.sasha.videochat.client.framework.activity;
 
 import javax.inject.Inject;
 
-import org.vaadin.sasha.videochat.client.chat.VideoChatActivity;
-import org.vaadin.sasha.videochat.client.chat.VideoChatPlace;
-import org.vaadin.sasha.videochat.client.login.LoginActivity;
-import org.vaadin.sasha.videochat.client.login.LoginPlace;
+import org.vaadin.sasha.videochat.client.ui.chat.VideoChatActivity;
+import org.vaadin.sasha.videochat.client.ui.chat.VideoChatPlace;
+import org.vaadin.sasha.videochat.client.ui.login.LoginActivity;
+import org.vaadin.sasha.videochat.client.ui.login.LoginPlace;
 
 import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;

@@ -1,9 +1,9 @@
 package org.vaadin.sasha.videochat.client;
 
-import org.vaadin.sasha.videochat.client.chat.VideoChatPlace;
 import org.vaadin.sasha.videochat.client.event.UserLogedInEvent;
 import org.vaadin.sasha.videochat.client.injection.VideoChatInjector;
-import org.vaadin.sasha.videochat.client.login.LoginPlace;
+import org.vaadin.sasha.videochat.client.ui.chat.VideoChatPlace;
+import org.vaadin.sasha.videochat.client.ui.login.LoginPlace;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;

@@ -1,6 +1,5 @@
-package org.vaadin.sasha.videochat.client.chat.dialog;
+package org.vaadin.sasha.videochat.client.ui.dialog;
 
-import org.vaadin.sasha.videochat.client.dialog.DialogAction;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;

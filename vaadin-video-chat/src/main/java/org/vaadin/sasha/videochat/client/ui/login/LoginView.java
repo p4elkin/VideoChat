@@ -1,4 +1,4 @@
-package org.vaadin.sasha.videochat.client.login;
+package org.vaadin.sasha.videochat.client.ui.login;
 
 import com.google.gwt.user.client.ui.IsWidget;
 
@@ -11,10 +11,6 @@ public interface LoginView extends IsWidget {
         void signIn();
         
         void setUserName(String userName);
-        
-        void setPassword(String password);
-        
-        void setDuplicatePassword(String password);
         
         void setEmail(String password);
 

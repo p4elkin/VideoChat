@@ -1,7 +1,7 @@
-package org.vaadin.sasha.videochat.client.place;
+package org.vaadin.sasha.videochat.client.framework.place;
 
-import org.vaadin.sasha.videochat.client.chat.VideoChatTokenizer;
-import org.vaadin.sasha.videochat.client.login.LoginPlaceTokenizer;
+import org.vaadin.sasha.videochat.client.ui.chat.VideoChatTokenizer;
+import org.vaadin.sasha.videochat.client.ui.login.LoginPlaceTokenizer;
 
 import com.google.gwt.place.shared.PlaceHistoryMapper;
 import com.google.gwt.place.shared.WithTokenizers;

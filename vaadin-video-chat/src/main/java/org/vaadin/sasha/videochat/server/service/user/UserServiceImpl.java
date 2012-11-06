@@ -1,8 +1,10 @@
 package org.vaadin.sasha.videochat.server.service.user;
 
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
 import javax.servlet.http.HttpSession;
 
+import org.vaadin.sasha.videochat.server.persistence.VideoChatEMF;
 import org.vaadin.sasha.videochat.shared.domain.User;
 
 import com.google.inject.Provider;
@@ -13,10 +15,7 @@ import com.google.inject.servlet.SessionScoped;
 public class UserServiceImpl implements UserService {
     
     @Inject
-    private HttpSession session;
-    
-    //@Inject
-    //private Provider<OObjectDatabaseTx> databaseProvider;
+    private VideoChatEMF emf;
     
     @Inject
     private Provider<User> currentUser;
@@ -51,11 +50,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User registerUser(User newUser) {
-        //final User user = databaseProvider.get().newInstance(User.class);
-        //user.setUserName(newUser.getUserName());
-        //user.setPassword(newUser.getPassword());
-        //databaseProvider.get().save(user);
-        return null;//user;
+        final EntityManager em = emf.getFactory().createEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.persist(newUser);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        return newUser;
     }
 
     @Override

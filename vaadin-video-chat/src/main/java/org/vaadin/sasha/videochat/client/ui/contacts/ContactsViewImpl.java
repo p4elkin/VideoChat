@@ -1,4 +1,4 @@
-package org.vaadin.sasha.videochat.client.contacts;
+package org.vaadin.sasha.videochat.client.ui.contacts;
 
 import java.util.List;
 

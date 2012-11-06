@@ -1,4 +1,4 @@
-package org.vaadin.sasha.videochat.client.place;
+package org.vaadin.sasha.videochat.client.framework.place;
 
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceTokenizer;

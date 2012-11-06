@@ -1,11 +1,11 @@
-package org.vaadin.sasha.videochat.client.login;
+package org.vaadin.sasha.videochat.client.ui.login;
 
 import javax.inject.Inject;
 
 import org.vaadin.sasha.videochat.client.SessionInfo;
 import org.vaadin.sasha.videochat.client.VideoChatServiceAsync;
-import org.vaadin.sasha.videochat.client.chat.VideoChatPlace;
 import org.vaadin.sasha.videochat.client.event.UserLogedInEvent;
+import org.vaadin.sasha.videochat.client.ui.chat.VideoChatPlace;
 import org.vaadin.sasha.videochat.shared.domain.User;
 
 import com.google.gwt.activity.shared.AbstractActivity;
@@ -28,14 +28,10 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
     
     private EventBus eventBus;
     
-    private String password;
-    
     private String userName;
     
     private String email;
-    
-    private String duplicatePassword;
-    
+   
     private User user;
     
     @Inject
@@ -108,16 +104,6 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
     @Override
     public void setUserName(String userName) {
         this.userName = userName;
-    }
-
-    @Override
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    @Override
-    public void setDuplicatePassword(String password) {
-        this.duplicatePassword = password;
     }
 
     @Override

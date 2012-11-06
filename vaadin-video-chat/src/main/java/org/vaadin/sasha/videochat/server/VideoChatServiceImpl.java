@@ -3,7 +3,6 @@ package org.vaadin.sasha.videochat.server;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.vaadin.sasha.videochat.client.VideoChatService;
@@ -27,8 +26,6 @@ public class VideoChatServiceImpl extends RemoteServiceServlet implements VideoC
     @Inject 
     private Provider<UserService> userServiceProvider;
     
-    @Inject 
-    private Provider<HttpServletRequest> requestProvider;
     
     public int createChatRoom(int creatorId) {
         return VideoChatRoomManager.createRoom(creatorId).getId();

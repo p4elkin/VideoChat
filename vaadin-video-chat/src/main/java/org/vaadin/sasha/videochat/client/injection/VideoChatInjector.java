@@ -1,9 +1,9 @@
 package org.vaadin.sasha.videochat.client.injection;
 
 import org.vaadin.sasha.videochat.client.VideoChatServiceAsync;
-import org.vaadin.sasha.videochat.client.activity.VideoChatActivityMapper;
-import org.vaadin.sasha.videochat.client.chat.VideoChatView;
-import org.vaadin.sasha.videochat.client.contacts.ContactsView;
+import org.vaadin.sasha.videochat.client.framework.activity.VideoChatActivityMapper;
+import org.vaadin.sasha.videochat.client.ui.chat.VideoChatView;
+import org.vaadin.sasha.videochat.client.ui.contacts.ContactsView;
 
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;

@@ -8,8 +8,8 @@ import elemental.html.Location;
 
 public class StringUtil {
 
-    public static final native String createUrl(JavaScriptObject stream) /*-{
-		return $wnd.webkitURL.createObjectURL(stream);
+    public static final native String createUrl(JavaScriptObject object) /*-{
+		return $wnd.webkitURL.createObjectURL(object);
     }-*/;
 
     public static String prepareWsUrl(int userId) {

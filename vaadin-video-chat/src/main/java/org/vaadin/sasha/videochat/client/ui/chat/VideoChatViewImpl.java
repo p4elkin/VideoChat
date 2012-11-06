@@ -1,9 +1,9 @@
-package org.vaadin.sasha.videochat.client.chat;
+package org.vaadin.sasha.videochat.client.ui.chat;
 
 import javax.inject.Inject;
 
-import org.vaadin.sasha.videochat.client.chat.dialog.IncomingCallDialogView;
-import org.vaadin.sasha.videochat.client.dialog.DialogAction;
+import org.vaadin.sasha.videochat.client.ui.dialog.DialogAction;
+import org.vaadin.sasha.videochat.client.ui.dialog.IncomingCallDialogView;
 import org.vaadin.sasha.videochat.client.widget.VideoWidget;
 
 import com.google.gwt.event.dom.client.ClickEvent;

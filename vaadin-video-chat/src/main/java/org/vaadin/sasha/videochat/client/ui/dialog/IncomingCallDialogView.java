@@ -1,7 +1,5 @@
-package org.vaadin.sasha.videochat.client.chat.dialog;
+package org.vaadin.sasha.videochat.client.ui.dialog;
 
-import org.vaadin.sasha.videochat.client.dialog.DialogAction;
-import org.vaadin.sasha.videochat.client.dialog.DialogView;
 
 
 public interface IncomingCallDialogView extends DialogView {

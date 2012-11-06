@@ -1,22 +1,22 @@
 package org.vaadin.sasha.videochat.client.injection;
 
 import org.vaadin.sasha.videochat.client.SessionInfo;
-import org.vaadin.sasha.videochat.client.activity.VideoChatActivityMapper;
-import org.vaadin.sasha.videochat.client.chat.VideoChatActivity;
-import org.vaadin.sasha.videochat.client.chat.VideoChatPlace;
-import org.vaadin.sasha.videochat.client.chat.VideoChatView;
-import org.vaadin.sasha.videochat.client.chat.VideoChatViewImpl;
-import org.vaadin.sasha.videochat.client.chat.dialog.IncomingCallDialogView;
-import org.vaadin.sasha.videochat.client.chat.dialog.IncomingCallDialogViewImpl;
-import org.vaadin.sasha.videochat.client.contacts.ContactsPresenter;
-import org.vaadin.sasha.videochat.client.contacts.ContactsView;
-import org.vaadin.sasha.videochat.client.contacts.ContactsViewImpl;
-import org.vaadin.sasha.videochat.client.login.LoginActivity;
-import org.vaadin.sasha.videochat.client.login.LoginView;
-import org.vaadin.sasha.videochat.client.login.LoginViewImpl;
-import org.vaadin.sasha.videochat.client.place.VideoChatPlaceHistoryMapper;
+import org.vaadin.sasha.videochat.client.framework.activity.VideoChatActivityMapper;
+import org.vaadin.sasha.videochat.client.framework.place.VideoChatPlaceHistoryMapper;
 import org.vaadin.sasha.videochat.client.serverconnection.PeerConnectionManager;
 import org.vaadin.sasha.videochat.client.serverconnection.ServerConnection;
+import org.vaadin.sasha.videochat.client.ui.chat.VideoChatActivity;
+import org.vaadin.sasha.videochat.client.ui.chat.VideoChatPlace;
+import org.vaadin.sasha.videochat.client.ui.chat.VideoChatView;
+import org.vaadin.sasha.videochat.client.ui.chat.VideoChatViewImpl;
+import org.vaadin.sasha.videochat.client.ui.contacts.ContactsPresenter;
+import org.vaadin.sasha.videochat.client.ui.contacts.ContactsView;
+import org.vaadin.sasha.videochat.client.ui.contacts.ContactsViewImpl;
+import org.vaadin.sasha.videochat.client.ui.dialog.IncomingCallDialogView;
+import org.vaadin.sasha.videochat.client.ui.dialog.IncomingCallDialogViewImpl;
+import org.vaadin.sasha.videochat.client.ui.login.LoginActivity;
+import org.vaadin.sasha.videochat.client.ui.login.LoginView;
+import org.vaadin.sasha.videochat.client.ui.login.LoginViewImpl;
 import org.vaadin.sasha.videochat.client.widget.VideoWidget;
 
 import com.google.gwt.activity.shared.ActivityManager;
