@@ -31,7 +31,7 @@ public class VaadinVideoChat implements EntryPoint {
 
             @Override
             public void onFailure(Throwable caught) {
-                injector.getPlaceController().goTo(new LoginPlace());
+                injector.getPlaceController().goTo(new LoginPlace(false));
             }
         });
         

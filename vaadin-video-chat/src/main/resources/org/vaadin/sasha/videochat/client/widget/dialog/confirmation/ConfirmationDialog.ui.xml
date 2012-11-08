@@ -1,0 +1,13 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+
+	<g:HTMLPanel>
+		<g:HTML ui:field='message'></g:HTML>
+	</g:HTMLPanel>
+
+	<g:HTMLPanel>
+		<g:Button ui:field='confirm'></g:Button>
+		<g:Button ui:field='cancel'></g:Button>
+	</g:HTMLPanel>
+	
+</ui:UiBinder>

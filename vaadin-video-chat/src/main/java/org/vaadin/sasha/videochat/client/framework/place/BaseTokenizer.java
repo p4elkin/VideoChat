@@ -5,7 +5,7 @@ import com.google.gwt.place.shared.PlaceTokenizer;
 
 public abstract class BaseTokenizer<T extends Place> implements PlaceTokenizer<T> {
 
-    public static String extractPrefix(String fragment) {
+    public static String extractToken(String fragment) {
         int i = fragment.indexOf(':');
         return i != -1 ? fragment.substring(0, i) : fragment;
     }

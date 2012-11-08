@@ -9,7 +9,8 @@ public class LoginPlaceTokenizer extends BaseTokenizer<LoginPlace> {
 
     @Override
     public LoginPlace getPlace(String token) {
-        return new LoginPlace();
+        final String bareToken = extractToken(token);
+        return new LoginPlace(bareToken.contains("reg"));
     }
 
     @Override

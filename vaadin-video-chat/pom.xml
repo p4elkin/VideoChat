@@ -85,14 +85,12 @@
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
 			<version>1.0.0.GA</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
 			<version>1.0.0.GA</version>
 			<classifier>sources</classifier>
-			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -150,13 +148,11 @@
 					</execution>
 				</executions>
 				<configuration>
-					<draftCompile>true</draftCompile>
-					<style>PRETTY</style>
 					<webappDirectory>${basedir}/src/main/webapp</webappDirectory>
 					<port>8080</port>
-					<!-- <logLevel>DEBUG</logLevel> -->
 					<runTarget>VaadinVideoChat.html</runTarget>
-					<hostedWebapp>${basedir}/src/main/webapp</hostedWebapp>
+					<!-- <hostedWebapp>${basedir}/src/main/webapp</hostedWebapp> <logLevel>DEBUG</logLevel>-->
+					<hostedWebapp>${webappDirectory}</hostedWebapp>
 				</configuration>
 			</plugin>
 

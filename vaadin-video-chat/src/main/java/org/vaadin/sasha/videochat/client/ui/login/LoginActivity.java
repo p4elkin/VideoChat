@@ -20,6 +20,8 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
     
     private final LoginView view;
     
+    private final User user = new User();
+    
     private boolean isAuthenticated = false;
 
     private SessionInfo sessionInfo;
@@ -27,12 +29,6 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
     private PlaceController controller;
     
     private EventBus eventBus;
-    
-    private String userName;
-    
-    private String email;
-   
-    private User user;
     
     @Inject
     public LoginActivity(final LoginView view, VideoChatServiceAsync service, 
@@ -59,9 +55,6 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
 
     @Override
     public void signIn() {
-        final User user = new User();
-        //user.setPassword(password);
-        user.setUserName(userName);
         service.signIn(user, new AsyncCallback<Integer>() {
             
             @Override
@@ -81,9 +74,6 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
    
     @Override
     public void register() {
-        final User user = new User();
-        //user.setPassword(password);
-        user.setUserName(userName);
         service.register(user, new AsyncCallback<Integer>() {
             
             @Override
@@ -103,12 +93,12 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
     
     @Override
     public void setUserName(String userName) {
-        this.userName = userName;
+        user.setUserName(userName);
     }
 
     @Override
     public void setEmail(String email) {
-        this.email = email;
+        user.setEmail(email);
     }
     
 }

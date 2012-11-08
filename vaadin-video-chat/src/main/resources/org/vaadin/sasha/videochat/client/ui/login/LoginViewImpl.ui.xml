@@ -1,0 +1,19 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' 
+	xmlns:vc = 'urn:import:org.vaadin.sasha.videochat.client.widget'>
+
+
+	<g:HTMLPanel styleName="login-view">
+		<div class="login-form">
+		<div>
+			<vc:LabeledTextBox ui:field='email' text = "Email"/>
+			<vc:LabeledTextBox ui:field='userName' text = "User Name"/>
+		</div>
+		<div class="footer">
+			<g:Button ui:field='register' HTML="REG"/>
+			<g:Button ui:field='signIn' HTML="LOGIN"/>
+		</div>
+		</div>
+	</g:HTMLPanel>
+	
+</ui:UiBinder>

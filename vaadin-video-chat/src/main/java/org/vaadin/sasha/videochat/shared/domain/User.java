@@ -25,18 +25,8 @@ public class User implements Serializable {
     private String email;
 
     private String userName;
-
-    private String test;
     
     private List<User> contactList = new LinkedList<User>();
-
-    public String getTest() {
-        return test;
-    }
-    
-    public void setTest(String test) {
-        this.test = test;
-    }
     
     public String getEmail() {
         return email;

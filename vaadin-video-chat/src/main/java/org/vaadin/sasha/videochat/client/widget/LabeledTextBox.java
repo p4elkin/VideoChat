@@ -17,21 +17,24 @@ public class LabeledTextBox extends Composite implements HasValue<String>, HasVa
     
     private Label label = new Label();
     
-    public LabeledTextBox(final String caption) {
+    public LabeledTextBox() {
         initWidget(panel);
         addStyleName("labeled-textfield");
         addStyleName("clearfix");
-        construct(caption);
+        construct();
     }
 
-    private void construct(String caption) {
+    private void construct() {
         label.addStyleName("label");
         box.addStyleName("field");
-        label.setText(caption);
         panel.add(label);
         panel.add(box);
     }
 
+    public void setText(String text) {
+        label.setText(text);    
+    }
+    
     @Override
     public HandlerRegistration addValueChangeHandler(ValueChangeHandler<String> handler) {
         return box.addValueChangeHandler(handler);
