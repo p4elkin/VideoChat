@@ -37,6 +37,7 @@ public class LoginViewImpl extends Composite implements LoginView {
 
     public LoginViewImpl() {
         initWidget(binder.createAndBindUi(this));
+        userName.setVisible(false);
     }
 
     @UiHandler("signIn")
@@ -61,6 +62,8 @@ public class LoginViewImpl extends Composite implements LoginView {
     @UiHandler("register")
     public void onClick(ClickEvent event) {
         isRegistering = true;
+        userName.setVisible(true);
+        register.setVisible(false);
     }
 
     @Override

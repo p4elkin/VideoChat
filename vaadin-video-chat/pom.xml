@@ -27,10 +27,10 @@
 	<dependencies>
 		<!-- GIN Stuff -->
 		<dependency>
-            <groupId>com.google.gwt.inject</groupId>
-            <artifactId>gin</artifactId>
-            <version>2.0.0</version>
-            <classifier/>
+			<groupId>com.google.gwt.inject</groupId>
+			<artifactId>gin</artifactId>
+			<version>2.0.0</version>
+			<classifier />
 			<exclusions>
 				<exclusion>
 					<groupId>com.google.gwt</groupId>
@@ -51,13 +51,13 @@
 			<artifactId>gwt-elemental</artifactId>
 			<version>${gwtVersion}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
 			<version>${gwtVersion}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-websocket</artifactId>
@@ -151,7 +151,7 @@
 					<webappDirectory>${basedir}/src/main/webapp</webappDirectory>
 					<port>8080</port>
 					<runTarget>VaadinVideoChat.html</runTarget>
-					<!-- <hostedWebapp>${basedir}/src/main/webapp</hostedWebapp> <logLevel>DEBUG</logLevel>-->
+					<!-- <hostedWebapp>${basedir}/src/main/webapp</hostedWebapp> <logLevel>DEBUG</logLevel> -->
 					<hostedWebapp>${webappDirectory}</hostedWebapp>
 				</configuration>
 			</plugin>

@@ -1,7 +1,10 @@
 package org.vaadin.sasha.videochat.server;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 
@@ -11,21 +14,23 @@ import org.vaadin.sasha.videochat.server.service.user.UserService;
 import org.vaadin.sasha.videochat.shared.domain.User;
 
 import com.google.gson.Gson;
+import com.google.inject.Key;
+import com.google.inject.servlet.ServletScopes;
 
 public class VideoChatSocket implements WebSocket.OnTextMessage {
 
-    private VideoChatSocketManager socketManager;
+    private final VideoChatSocketManager socketManager;
 
-    private UserService userService;
+    private final UserService userService;
 
     private Connection connection;
 
-    private final User user;
-    
     @Inject
-    public VideoChatSocket(VideoChatSocketManager socketManager, UserService service, User user) {
+    private SessionCtx sessionCtx;
+
+    @Inject
+    public VideoChatSocket(VideoChatSocketManager socketManager, UserService service) {
         super();
-        this.user = user;
         this.userService = service;
         this.socketManager = socketManager;
     }
@@ -40,7 +45,7 @@ public class VideoChatSocket implements WebSocket.OnTextMessage {
     private void broadcastMessageToContacts(final String statusMessage) {
         final Iterable<User> contacts = userService.getContactsList();
         for (final User contact : contacts) {
-            System.out.println("SENDING from " + user.getUserName() + " to " + contact.getUserName() + " " + statusMessage);
+            System.out.println("SENDING from " + sessionCtx.getUser().getUserName() + " to " + contact.getUserName() + " " + statusMessage);
             final List<VideoChatSocket> sockets = socketManager.getSocketForUser(contact);
             if (sockets != null) {
                 for (final VideoChatSocket socket : sockets) {
@@ -57,7 +62,7 @@ public class VideoChatSocket implements WebSocket.OnTextMessage {
     @Override
     public void onOpen(Connection connection) {
         this.connection = connection;
-        socketManager.registerSocket(this);
+        socketManager.registerSocket(VideoChatSocket.this);
         System.out.println("[USER ID]: " + userService.getCurrentUserId());
         final String message = new Gson().toJson(new UserOnlineStatusMessage(userService.getCurrentUserId(), true));
         broadcastMessageToContacts(message);
@@ -65,11 +70,39 @@ public class VideoChatSocket implements WebSocket.OnTextMessage {
 
     @Override
     public void onMessage(final String jsonMessage) {
-        System.out.println(jsonMessage);
-        broadcastMessageToContacts(jsonMessage);
+        executeAsRequestScoped(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                System.out.println(jsonMessage);
+                broadcastMessageToContacts(jsonMessage);
+                return true;
+            }
+        });
+
     }
 
-    public User getUser() {
-        return user;
+    private final Map<Key<?>, Object> bindings = new HashMap<Key<?>, Object>();
+
+    // TODO - move DB stuff here.
+    private <T> void executeAsRequestScoped(final Callable<T> command) {
+        try {
+            ServletScopes.scopeRequest(new Callable<T>() {
+
+                @Override
+                public T call() throws Exception {
+                    final T result;
+                    try {
+                        result = command.call();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        return null;
+                    } finally {
+                    }
+                    return result;
+                }
+            }, bindings).call();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

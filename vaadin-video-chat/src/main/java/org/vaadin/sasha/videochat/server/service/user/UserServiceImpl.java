@@ -8,26 +8,26 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
+import org.vaadin.sasha.videochat.server.SessionCtx;
 import org.vaadin.sasha.videochat.server.persistence.VideoChatEMF;
 import org.vaadin.sasha.videochat.shared.domain.User;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
-import com.google.inject.Provider;
 import com.google.inject.servlet.SessionScoped;
 
 
 @SessionScoped
 public class UserServiceImpl implements UserService {
-    
+
     private static List<User> usersOnline = Collections.synchronizedList(new ArrayList<User>());
-    
+
     @Inject
     private VideoChatEMF emf;
-    
+
     @Inject
-    private Provider<User> currentUserProvider;
-    
+    private SessionCtx sessionCtx;
+
     @Override
     public User authenticate(String email) {
         final EntityManager em = emf.getFactory().createEntityManager();
@@ -36,6 +36,8 @@ public class UserServiceImpl implements UserService {
             final TypedQuery<User> q = em.createQuery("select from USER where email = :email", User.class);
             q.setParameter("email", email);
             user = q.getSingleResult();
+        } catch(Exception e) {
+            e.printStackTrace();
         } finally {
             em.close();
         }
@@ -44,7 +46,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Iterable<User> getContactsList() {
-        return currentUserProvider.get().getContactList();
+        return sessionCtx.getUser().getContactList();
     }
 
     @Override
@@ -59,7 +61,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void setCurrentUserOnline(boolean isOnline) {
-        final User current = currentUserProvider.get();
+        final User current = sessionCtx.getUser();
         if (current != null) {
             if (isOnline && !usersOnline.contains(current)) {
                 usersOnline.add(current);
@@ -84,7 +86,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Integer getCurrentUserId() {
-        return currentUserProvider.get() == null ? -1 :  currentUserProvider.get().getId();
+        return sessionCtx.getUser() == null ? -1 :  sessionCtx.getUser().getId();
     }
 
 }

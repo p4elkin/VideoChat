@@ -9,7 +9,6 @@ import org.vaadin.sasha.videochat.client.VideoChatService;
 import org.vaadin.sasha.videochat.server.service.user.UserService;
 import org.vaadin.sasha.videochat.shared.domain.User;
 
-import com.google.common.collect.Iterables;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
@@ -20,22 +19,24 @@ import com.google.inject.Singleton;
  */
 @Singleton
 public class VideoChatServiceImpl extends RemoteServiceServlet implements VideoChatService {
-    
+
     @Inject
     private Provider<HttpSession> sessionProvider;
+    @Inject
 
-    @Inject 
     private Provider<UserService> userServiceProvider;
-    
+
     @Inject
     private Provider<User> currentUserProvider;
-    
+
+    @Override
     public int createChatRoom(int creatorId) {
         return VideoChatRoomManager.createRoom(creatorId).getId();
     }
 
+    @Override
     public int signIn(User user) throws IllegalArgumentException {
-        final UserService userService = userServiceProvider.get(); 
+        final UserService userService = userServiceProvider.get();
         User foundUser = userService.authenticate(user.getEmail());
         sessionProvider.get().setAttribute("user", foundUser);
         return userServiceProvider.get().getCurrentUserId();
@@ -48,7 +49,7 @@ public class VideoChatServiceImpl extends RemoteServiceServlet implements VideoC
 
     @Override
     public int authenticate() throws IllegalArgumentException {
-        User user = currentUserProvider.get(); 
+        User user = currentUserProvider.get();
         if (user != null) {
             return userServiceProvider.get().getCurrentUserId();
         }
@@ -61,5 +62,5 @@ public class VideoChatServiceImpl extends RemoteServiceServlet implements VideoC
         sessionProvider.get().setAttribute("user", user);
         return userServiceProvider.get().getCurrentUserId();
     }
-    
+
 }

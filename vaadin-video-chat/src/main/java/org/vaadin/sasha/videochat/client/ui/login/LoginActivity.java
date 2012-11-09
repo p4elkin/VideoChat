@@ -6,6 +6,7 @@ import org.vaadin.sasha.videochat.client.SessionInfo;
 import org.vaadin.sasha.videochat.client.VideoChatServiceAsync;
 import org.vaadin.sasha.videochat.client.event.UserLogedInEvent;
 import org.vaadin.sasha.videochat.client.ui.chat.VideoChatPlace;
+import org.vaadin.sasha.videochat.client.widget.dialog.confirmation.NotificationDialog;
 import org.vaadin.sasha.videochat.shared.domain.User;
 
 import com.google.gwt.activity.shared.AbstractActivity;
@@ -59,15 +60,12 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
             
             @Override
             public void onSuccess(Integer userId) {
-                isAuthenticated = true;
-                sessionInfo.setUserId(userId);
-                controller.goTo(new VideoChatPlace());
-                eventBus.fireEvent(new UserLogedInEvent(userId));
+                onLoginSuccess(userId);
             }
             
             @Override
             public void onFailure(Throwable caught) {
-                
+                (new NotificationDialog("Login Failed")).show();
             }
         });
     }
@@ -78,15 +76,12 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
             
             @Override
             public void onSuccess(Integer userId) {
-                isAuthenticated = true;
-                sessionInfo.setUserId(userId);
-                controller.goTo(new VideoChatPlace());
-                eventBus.fireEvent(new UserLogedInEvent(userId));
+                onLoginSuccess(userId);
             }
             
             @Override
             public void onFailure(Throwable caught) {
-                
+                (new NotificationDialog("Login Failed")).show();
             }
         });
     }
@@ -99,6 +94,14 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
     @Override
     public void setEmail(String email) {
         user.setEmail(email);
+    }
+    
+    private void onLoginSuccess(Integer userId) {
+        isAuthenticated = true;
+        sessionInfo.setUserId(userId);
+        controller.goTo(new VideoChatPlace());
+        (new NotificationDialog("Login sucess")).show();
+        eventBus.fireEvent(new UserLogedInEvent(userId));
     }
     
 }
