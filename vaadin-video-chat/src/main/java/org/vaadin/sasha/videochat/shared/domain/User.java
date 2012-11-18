@@ -25,9 +25,9 @@ public class User implements Serializable {
     private String email;
 
     private String userName;
-    
+
     private List<User> contactList = new LinkedList<User>();
-    
+
     public String getEmail() {
         return email;
     }
@@ -55,6 +55,37 @@ public class User implements Serializable {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public void addContact(User user) {
+        contactList.add(user);
+    }
+
+    @Override
+    public String toString() {
+        return "user:[id=" + getId() + " email=" + getEmail() + "]";
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + id;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        User other = (User) obj;
+        if (id != other.id)
+            return false;
+        return true;
     }
 
 }

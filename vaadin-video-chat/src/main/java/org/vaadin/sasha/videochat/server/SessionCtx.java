@@ -20,4 +20,8 @@ public class SessionCtx {
             return null;
         }
     }
+
+    public void setUser(User user) {
+        session.setAttribute("user", user);
+    }
 }

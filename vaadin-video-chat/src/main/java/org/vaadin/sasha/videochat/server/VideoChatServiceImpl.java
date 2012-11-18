@@ -3,12 +3,12 @@ package org.vaadin.sasha.videochat.server;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpSession;
 
 import org.vaadin.sasha.videochat.client.VideoChatService;
 import org.vaadin.sasha.videochat.server.service.user.UserService;
 import org.vaadin.sasha.videochat.shared.domain.User;
 
+import com.google.common.collect.Lists;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
@@ -19,16 +19,13 @@ import com.google.inject.Singleton;
  */
 @Singleton
 public class VideoChatServiceImpl extends RemoteServiceServlet implements VideoChatService {
-
+    
     @Inject
-    private Provider<HttpSession> sessionProvider;
-    @Inject
-
     private Provider<UserService> userServiceProvider;
 
     @Inject
-    private Provider<User> currentUserProvider;
-
+    private Provider<SessionCtx> sessionCtxProvider;
+    
     @Override
     public int createChatRoom(int creatorId) {
         return VideoChatRoomManager.createRoom(creatorId).getId();
@@ -36,31 +33,44 @@ public class VideoChatServiceImpl extends RemoteServiceServlet implements VideoC
 
     @Override
     public int signIn(User user) throws IllegalArgumentException {
-        final UserService userService = userServiceProvider.get();
-        User foundUser = userService.authenticate(user.getEmail());
-        sessionProvider.get().setAttribute("user", foundUser);
-        return userServiceProvider.get().getCurrentUserId();
+        final User foundUser = userServiceProvider.get().signIn(user.getEmail());
+        if (foundUser != null) {
+            return setUserOnline(foundUser);
+        } else {
+            throw new IllegalArgumentException("User not found");
+        }
+        
+    }
+
+    private Integer setUserOnline(User foundUser) {
+        sessionCtxProvider.get().setUser(foundUser);
+        userServiceProvider.get().setCurrentUserOnline(true);
+        return foundUser.getId();
     }
 
     @Override
-    public List<String> getUsersOnline() {
-        return VideoChatRoomManager.getUsersOnline();
+    public List<User> getUsersOnline() {
+        final User user = sessionCtxProvider.get().getUser(); 
+        return user == null ? Lists.<User>newArrayList() : user.getContactList(); 
     }
 
     @Override
     public int authenticate() throws IllegalArgumentException {
-        User user = currentUserProvider.get();
+        User user = sessionCtxProvider.get().getUser();
         if (user != null) {
-            return userServiceProvider.get().getCurrentUserId();
+            return user.getId();
+        } else {
+            throw new IllegalArgumentException("Not authenticated");   
         }
-        throw new IllegalArgumentException();
     }
 
     @Override
     public int register(User newUser) {
-        User user = userServiceProvider.get().registerUser(newUser);
-        sessionProvider.get().setAttribute("user", user);
-        return userServiceProvider.get().getCurrentUserId();
+        final User user = userServiceProvider.get().registerUser(newUser);
+        if (user != null) {
+            return setUserOnline(user);
+        }
+        throw new IllegalArgumentException("Couldn't register new user");
     }
 
 }

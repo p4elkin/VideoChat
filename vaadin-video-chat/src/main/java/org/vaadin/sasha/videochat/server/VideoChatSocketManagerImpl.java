@@ -18,7 +18,7 @@ public class VideoChatSocketManagerImpl implements VideoChatSocketManager {
     private final ListMultimap<User, VideoChatSocket> sockets = ArrayListMultimap.create();
 
     @Inject
-    private Provider<User> userProvider;
+    private Provider<SessionCtx> sessionCtx;
 
     @Override
     public List<VideoChatSocket> getSocketForUser(User user) {
@@ -27,12 +27,13 @@ public class VideoChatSocketManagerImpl implements VideoChatSocketManager {
 
     @Override
     public void registerSocket(VideoChatSocket socket) {
-        sockets.put(userProvider.get(), socket);
+        System.out.println("Registered socket for user " + sessionCtx.get().getUser().getEmail());
+        sockets.put(sessionCtx.get().getUser(), socket);
     }
 
     @Override
     public void deregisterSocket(VideoChatSocket socket) {
-        sockets.remove(userProvider.get(), socket);
+        sockets.remove(sessionCtx.get().getUser(), socket);
     }
 
 }

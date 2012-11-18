@@ -14,8 +14,9 @@ import com.google.gwt.user.client.ui.SimplePanel;
 
 public class VaadinVideoChat implements EntryPoint {
 
-    private VideoChatInjector injector = GWT.create(VideoChatInjector.class);
+    private final VideoChatInjector injector = GWT.create(VideoChatInjector.class);
 
+    @Override
     public void onModuleLoad() {
         final SimplePanel mainViewport = injector.getMainViewport();
         injector.getPlaceHistoryHandler();
@@ -25,8 +26,12 @@ public class VaadinVideoChat implements EntryPoint {
         injector.getRemoteService().authenticate(new AsyncCallback<Integer>() {
             @Override
             public void onSuccess(Integer userId) {
-                injector.getEventBus().fireEvent(new UserLogedInEvent(userId));
-                injector.getPlaceController().goTo(new VideoChatPlace());
+                if (userId > 0) {
+                    injector.getEventBus().fireEvent(new UserLogedInEvent(userId));
+                    injector.getPlaceController().goTo(new VideoChatPlace());                    
+                } else {
+                    injector.getPlaceController().goTo(new LoginPlace(false));    
+                }
             }
 
             @Override

@@ -15,7 +15,7 @@ public interface VideoChatServiceAsync {
 
 	void createChatRoom(int creatorId, AsyncCallback<Integer> callback) throws IllegalArgumentException;
 	
-	void getUsersOnline(AsyncCallback<List<String>> callback);
+	void getUsersOnline(AsyncCallback<List<User>> callback);
 	
 	void authenticate(AsyncCallback<Integer> callback) throws IllegalArgumentException;
 

@@ -21,5 +21,5 @@ public interface VideoChatService extends RemoteService {
     
     int register(User user);
     
-    List<String> getUsersOnline();
+    List<User> getUsersOnline();
 }

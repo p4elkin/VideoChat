@@ -9,14 +9,15 @@ import org.vaadin.sasha.videochat.client.event.SocketEvent;
 import org.vaadin.sasha.videochat.client.event.SocketEvent.SocketHandlerAdapter;
 import org.vaadin.sasha.videochat.client.message.VContactListMessage;
 import org.vaadin.sasha.videochat.client.message.VUserOnlineStatusMessage;
+import org.vaadin.sasha.videochat.client.ui.chat.VideoChatPlace;
+import org.vaadin.sasha.videochat.shared.domain.User;
 
+import com.google.gwt.place.shared.PlaceChangeEvent;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.web.bindery.event.shared.EventBus;
 
-import elemental.client.Browser;
-
-public class ContactsPresenter implements ContactsView.Presenter {
-
+public class ContactsPresenter implements ContactsView.Presenter, PlaceChangeEvent.Handler {
+    
     private ContactsView view;
     
     private VideoChatServiceAsync service;
@@ -26,7 +27,7 @@ public class ContactsPresenter implements ContactsView.Presenter {
         public void onContactListMessage(SocketEvent event) {
             final VContactListMessage message = event.getJson().cast();
             if (message.getContactMessageType().equals("ONLINE_STATUS")) {
-                VUserOnlineStatusMessage onlineMsg = message.cast();
+                final VUserOnlineStatusMessage onlineMsg = message.cast();
                 view.userOnlineStatusChanged(onlineMsg.getUserId(), onlineMsg.isOnline());
             }
         }
@@ -36,6 +37,7 @@ public class ContactsPresenter implements ContactsView.Presenter {
     public ContactsPresenter(VideoChatServiceAsync service, EventBus eventBus) {
         this.service = service;
         eventBus.addHandler(SocketEvent.TYPE, handler);
+        eventBus.addHandler(PlaceChangeEvent.TYPE, this);
     }
 
     @Override
@@ -45,14 +47,21 @@ public class ContactsPresenter implements ContactsView.Presenter {
     
     @Override
     public void loadContacts() {
-        service.getUsersOnline(new AsyncCallback<List<String>>() {
+        service.getUsersOnline(new AsyncCallback<List<User>>() {
             @Override
-            public void onSuccess(List<String> result) {
+            public void onSuccess(List<User> result) {
                 view.setContacts(result);
             }
             
             @Override
             public void onFailure(Throwable caught) {}
         });
+    }
+
+    @Override
+    public void onPlaceChange(PlaceChangeEvent event) {
+        if (event.getNewPlace() instanceof VideoChatPlace) {
+            loadContacts();
+        }
     }
 }

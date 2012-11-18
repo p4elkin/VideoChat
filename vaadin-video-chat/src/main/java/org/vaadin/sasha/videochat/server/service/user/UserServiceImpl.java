@@ -1,52 +1,45 @@
 package org.vaadin.sasha.videochat.server.service.user;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 
 import org.vaadin.sasha.videochat.server.SessionCtx;
-import org.vaadin.sasha.videochat.server.persistence.VideoChatEMF;
+import org.vaadin.sasha.videochat.server.persistence.OnlineUsersPool;
 import org.vaadin.sasha.videochat.shared.domain.User;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.google.inject.servlet.SessionScoped;
-
 
 @SessionScoped
 public class UserServiceImpl implements UserService {
 
-    private static List<User> usersOnline = Collections.synchronizedList(new ArrayList<User>());
-
+    @Inject 
+    private OnlineUsersPool onlineUsersPool;
+    
     @Inject
-    private VideoChatEMF emf;
+    private EntityManager em;
 
     @Inject
     private SessionCtx sessionCtx;
 
     @Override
-    public User authenticate(String email) {
-        final EntityManager em = emf.getFactory().createEntityManager();
-        User user = null;
+    public User signIn(String email) {
         try {
-            final TypedQuery<User> q = em.createQuery("select from USER where email = :email", User.class);
-            q.setParameter("email", email);
-            user = q.getSingleResult();
-        } catch(Exception e) {
-            e.printStackTrace();
-        } finally {
-            em.close();
+            return em.createQuery("SELECT u FROM User u where u.email = :email", User.class).
+            setParameter("email", email).
+            getSingleResult();
+        } catch (Exception e) {
+            System.out.println("Failed to find user by email: " + email + " cause: " + e.getMessage());
+            return null;
         }
-        return user;
     }
 
     @Override
     public Iterable<User> getContactsList() {
-        return sessionCtx.getUser().getContactList();
+        final User user = sessionCtx.getUser(); 
+        return user != null ? user.getContactList() : Lists.<User>newLinkedList();
     }
 
     @Override
@@ -54,7 +47,7 @@ public class UserServiceImpl implements UserService {
         return Iterables.filter(getContactsList(), new Predicate<User>() {
             @Override
             public boolean apply(User user) {
-                return usersOnline.contains(user);
+                return onlineUsersPool.isUserOnline(user);
             }
         });
     }
@@ -63,30 +56,39 @@ public class UserServiceImpl implements UserService {
     public void setCurrentUserOnline(boolean isOnline) {
         final User current = sessionCtx.getUser();
         if (current != null) {
-            if (isOnline && !usersOnline.contains(current)) {
-                usersOnline.add(current);
-            } else {
-                usersOnline.remove(current);
-            }
+            onlineUsersPool.setUserOnline(current, true);
         }
     }
 
     @Override
     public User registerUser(User newUser) {
-        final EntityManager em = emf.getFactory().createEntityManager();
-        try {
-            em.getTransaction().begin();
-            em.persist(newUser);
-            em.getTransaction().commit();
-        } finally {
-            em.close();
+        em.getTransaction().begin();
+        for (final User user : onlineUsersPool.getUsersOnline()) {
+            newUser.addContact(user);
         }
+        em.persist(newUser);
+        em.getTransaction().commit();
         return newUser;
     }
 
     @Override
     public Integer getCurrentUserId() {
-        return sessionCtx.getUser() == null ? -1 :  sessionCtx.getUser().getId();
+        return sessionCtx.getUser() == null ? -1 : sessionCtx.getUser().getId();
+    }
+
+    @Override
+    public void addToContacts(User user) {
+        final User current = sessionCtx.getUser();
+        if (current != null) {
+            try {
+                em.getTransaction().begin();
+                current.addContact(user);
+                em.merge(current);
+                em.getTransaction().commit();
+            } catch (IllegalArgumentException e) {
+                System.out.println("Failed to add contact, cause: " + e.getMessage());
+            }
+        }
     }
 
 }

@@ -4,7 +4,7 @@ import org.vaadin.sasha.videochat.shared.domain.User;
 
 public interface UserService {
 
-    User authenticate(String email);
+    User signIn(String email);
 
     User registerUser(User newUser);
 
@@ -14,6 +14,8 @@ public interface UserService {
 
     void setCurrentUserOnline(boolean isOnline);
 
+    void addToContacts(User user);
+    
     Integer getCurrentUserId();
 
 }

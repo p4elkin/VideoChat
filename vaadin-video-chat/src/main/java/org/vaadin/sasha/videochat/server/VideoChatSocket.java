@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
 
 import org.eclipse.jetty.websocket.WebSocket;
 import org.vaadin.sasha.videochat.server.event.UserOnlineStatusMessage;
@@ -45,14 +46,14 @@ public class VideoChatSocket implements WebSocket.OnTextMessage {
     private void broadcastMessageToContacts(final String statusMessage) {
         final Iterable<User> contacts = userService.getContactsList();
         for (final User contact : contacts) {
-            System.out.println("SENDING from " + sessionCtx.getUser().getUserName() + " to " + contact.getUserName() + " " + statusMessage);
             final List<VideoChatSocket> sockets = socketManager.getSocketForUser(contact);
             if (sockets != null) {
                 for (final VideoChatSocket socket : sockets) {
                     try {
+                        System.out.println("SENDING from " + sessionCtx.getUser().getEmail() + " to " + contact.getEmail() + " " + statusMessage);
                         socket.connection.sendMessage(statusMessage);
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        System.out.println("Failed to send message to user " + contact.getEmail() + " cause: " + e.getMessage());
                     }
                 }
             }
@@ -63,7 +64,7 @@ public class VideoChatSocket implements WebSocket.OnTextMessage {
     public void onOpen(Connection connection) {
         this.connection = connection;
         socketManager.registerSocket(VideoChatSocket.this);
-        System.out.println("[USER ID]: " + userService.getCurrentUserId());
+        System.out.println("Opened socket [USER ID]: " + userService.getCurrentUserId());
         final String message = new Gson().toJson(new UserOnlineStatusMessage(userService.getCurrentUserId(), true));
         broadcastMessageToContacts(message);
     }
@@ -88,6 +89,9 @@ public class VideoChatSocket implements WebSocket.OnTextMessage {
         try {
             ServletScopes.scopeRequest(new Callable<T>() {
 
+                @Inject
+                private EntityManager em;
+
                 @Override
                 public T call() throws Exception {
                     final T result;
@@ -97,6 +101,7 @@ public class VideoChatSocket implements WebSocket.OnTextMessage {
                         e.printStackTrace();
                         return null;
                     } finally {
+                        em.close();
                     }
                     return result;
                 }

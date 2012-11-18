@@ -13,7 +13,8 @@
       <property name="javax.persistence.jdbc.password" value="" />
 
       <!-- EclipseLink should create the database schema automatically -->
-      <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
+<!--      <property name="eclipselink.ddl-generation" value="drop-and-create-tables" /> 
+      <property name="eclipselink.ddl-generation" value="create-tables" />-->
       <property name="eclipselink.ddl-generation.output-mode" value="database" />
     </properties>
 

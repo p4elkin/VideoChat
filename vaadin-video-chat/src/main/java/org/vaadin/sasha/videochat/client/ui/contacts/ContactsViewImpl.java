@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.vaadin.sasha.videochat.shared.domain.User;
+
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.ListBox;
 
@@ -27,13 +29,7 @@ public class ContactsViewImpl extends FlowPanel implements ContactsView {
         super.onLoad();
         presenter.loadContacts();
     }
-    
-    @Override
-    public void setContacts(List<String> result) {
-        for (final String userName : result) {
-            usersOnline.addItem(userName);   
-        }
-    }
+   
 
     @Override
     public void userOnlineStatusChanged(int userId, boolean online) {
@@ -45,6 +41,13 @@ public class ContactsViewImpl extends FlowPanel implements ContactsView {
                     usersOnline.removeItem(i);      
                 }
             }
+        }
+    }
+
+    @Override
+    public void setContacts(List<User> contacts) {
+        for (final User user : contacts) {
+            usersOnline.addItem(user.getUserName());   
         }
     }
     
